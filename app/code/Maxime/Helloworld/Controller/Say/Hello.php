@@ -19,7 +19,8 @@ class Hello extends Action
      */
     public function execute()
     {
-        echo 'Say "Hello"! I`m win!';
-        die;
+        $this->_view->loadLayout();
+        $this->_view->getLayout()->initMessages();
+        $this->_view->renderLayout();
     }
 }
