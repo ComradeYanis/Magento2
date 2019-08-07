@@ -1,6 +1,6 @@
 <?php
 
-namespace Maxime\Helloworld\Controller\Index;
+namespace Maxime\Helloworld\Controller\Say;
 
 use Magento\Framework\App\Action\Action;
 
