@@ -45,4 +45,20 @@ class Job extends AbstractModel
     {
         $this->_init(ResourceModel\Job::class);
     }
+
+    /**
+     * @return int
+     */
+    public function getEnableStatus()
+    {
+        return 1;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDisableStatus()
+    {
+        return 0;
+    }
 }
