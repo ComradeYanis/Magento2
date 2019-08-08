@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchmaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="editor"/>
+    <body>
+        <referenceConrainer name="content">
+            <block class="Maxime\Jobs\Block\Adminhtml\Department\Edit" name="jobs_department_edit"/>
+        </referenceConrainer>
+    </body>
+
+</page>
