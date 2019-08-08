@@ -2,10 +2,12 @@
 
 namespace Maxime\Jobs\Setup;
 
+use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\UpgradeSchemaInterface;
+use Zend_Db_Exception;
 
 /**
  * Class UpgradeSchema
@@ -19,7 +21,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
      * @param SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
      * @return void
-     * @throws \Zend_Db_Exception
+     * @throws Zend_Db_Exception
      */
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
@@ -140,6 +142,37 @@ class UpgradeSchema implements UpgradeSchemaInterface
 
             // Execute SQL to create the table
             $installer->getConnection()->createTable($table);
+        }
+
+        if (version_compare($context->getVersion(), '1.0.0.2') < 0) {
+
+            /**
+             * Add full text index to our table department
+             */
+
+            $tableName = $installer->getTable('maxime_department');
+            $fullTextIntex = ['name']; // Column with fulltext index, you can put multiple fields
+
+            $setup->getConnection()->addIndex(
+                $tableName,
+                $installer->getIdxName($tableName, $fullTextIntex, AdapterInterface::INDEX_TYPE_FULLTEXT),
+                $fullTextIntex,
+                AdapterInterface::INDEX_TYPE_FULLTEXT
+            );
+
+            /**
+             * Add full text index to our table jobs
+             */
+
+            $tableName = $installer->getTable('maxime_job');
+            $fullTextIntex = ['title', 'type', 'location', 'description']; // Column with fulltext index, you can put multiple fields
+
+            $setup->getConnection()->addIndex(
+                $tableName,
+                $installer->getIdxName($tableName, $fullTextIntex, AdapterInterface::INDEX_TYPE_FULLTEXT),
+                $fullTextIntex,
+                AdapterInterface::INDEX_TYPE_FULLTEXT
+            );
         }
 
         $installer->endSetup();
