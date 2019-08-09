@@ -5,6 +5,10 @@ namespace Maxime\Jobs\Model\ResourceModel\Department;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Maxime\Jobs\Model\Department;
 
+/**
+ * Class Collection
+ * @package Maxime\Jobs\Model\ResourceModel\Department
+ */
 class Collection extends AbstractCollection
 {
     /**

@@ -1,10 +1,11 @@
 <?php
 namespace Maxime\Jobs\Model\ResourceModel;
 
-use \Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 /**
- * Department post mysql resource
+ * Class Job
+ * @package Maxime\Jobs\Model\ResourceModel
  */
 class Job extends AbstractDb
 {
@@ -19,5 +20,4 @@ class Job extends AbstractDb
         // Table Name and Primary Key column
         $this->_init('maxime_job', 'entity_id');
     }
-
 }
