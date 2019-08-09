@@ -10,7 +10,7 @@ class Collection extends AbstractCollection
     /**
      * @var string $_idFieldName
      */
-    protected $_idFieldName = \Maxime\Jobs\Model\Department::DEPARTMENT_ID;
+    protected $_idFieldName = Department::DEPARTMENT_ID;
 
     /**
      * Define resource model
