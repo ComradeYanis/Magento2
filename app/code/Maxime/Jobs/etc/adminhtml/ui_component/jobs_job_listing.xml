@@ -20,9 +20,9 @@
         <item name="buttons" xsi:type="array">
             <item name="add" xsi:type="array">
                 <item name="name" xsi:type="string">add</item>
-                <item name="label" xsi:type="string" translate="true">Add New Department</item>
+                <item name="label" xsi:type="string" translate="true">Add New Job</item>
                 <item name="class" xsi:type="string">primary</item>
-                <item name="url" xsi:type="string">*/*/new</item> <!-- magento will translate it by jobs/department/new -->
+                <item name="url" xsi:type="string">*/*/new</item> <!-- magento will translate it by jobs/job/new -->
             </item>
         </item>
     </argument>
@@ -125,16 +125,17 @@
         </column>
 
         <!-- Title Column -->
-        <column name="titile">
+        <column name="title">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">title</item>
-                    <item name="editor" xsi:type="array">
-                        <item name="editorType" xsi:type="string">title</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
-                    </item>
+                    <item name="filter" xsi:type="string">textRage</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <!--                    <item name="editor" xsi:type="array">-->
+                    <!--                        <item name="editorType" xsi:type="string">title</item>-->
+                    <!--                        <item name="validation" xsi:type="array">-->
+                    <!--                            <item name="required-entry" xsi:type="boolean">true</item>-->
+                    <!--                        </item>-->
+                    <!--                    </item>-->
                     <item name="label" xsi:type="string" translate="true">Title</item>
                 </item>
             </argument>
@@ -169,8 +170,8 @@
             </argument>
         </column>
         <!-- Status Column -->
-        <column name="date">
-            <argument name="status" xsi:type="array">
+        <column name="status">
+            <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">status</item>
                     <item name="editor" xsi:type="array">
@@ -184,8 +185,8 @@
             </argument>
         </column>
         <!-- Department Column -->
-        <column name="date">
-            <argument name="department" xsi:type="array">
+        <column name="department_id">
+            <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">department</item>
                     <item name="editor" xsi:type="array">
@@ -200,7 +201,7 @@
         </column>
 
         <!-- Action columns -->
-        <actionsColumn name="actions" class="Maxime\Jobs\Ui\Component\Listing\Column\DepartmentActions">
+        <actionsColumn name="actions" class="Maxime\Jobs\Ui\Component\Listing\Column\JobActions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="resizeEnabled" xsi:type="boolean">false</item>

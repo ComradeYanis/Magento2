@@ -17,7 +17,7 @@ use RuntimeException;
 class Save extends Action
 {
     /**
-     * @var Department
+     * @var Department $_model
      */
     protected $_model;
 
