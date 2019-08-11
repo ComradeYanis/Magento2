@@ -1,33 +1,33 @@
 <?php
 
-namespace Maxime\Jobs\Controller\Adminhtml\Department;
+namespace Maxime\Jobs\Controller\Adminhtml\Job;
 
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Maxime\Jobs\Model\Department;
+use Maxime\Jobs\Model\Job;
 use RuntimeException;
 
 /**
  * Class Save
- * @package Maxime\Jobs\Controller\Adminhtml\Department
+ * @package Maxime\Jobs\Controller\Adminhtml\Job
  */
 class Save extends Action
 {
     /**
-     * @var Department $_model
+     * @var Job $_model
      */
     protected $_model;
 
     /**
      * @param Action\Context $context
-     * @param Department $model
+     * @param Job $model
      */
     public function __construct(
         Action\Context $context,
-        Department $model
+        Job $model
     ) {
         parent::__construct($context);
         $this->_model = $model;
@@ -38,7 +38,7 @@ class Save extends Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Maxime_Jobs::department_save');
+        return $this->_authorization->isAllowed('Maxime_Jobs::job_save');
     }
 
     /**
@@ -52,7 +52,7 @@ class Save extends Action
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
-            /** @var Department $model */
+            /** @var Job $model */
             $model = $this->_model;
 
             $id = $this->getRequest()->getParam('id');
@@ -63,13 +63,13 @@ class Save extends Action
             $model->setData($data);
 
             $this->_eventManager->dispatch(
-                'jobs_department_prepare_save',
-                ['department' => $model, 'request' => $this->getRequest()]
+                'jobs_job_prepare_save',
+                ['job' => $model, 'request' => $this->getRequest()]
             );
 
             try {
                 $model->save();
-                $this->messageManager->addSuccess(__('Department saved'));
+                $this->messageManager->addSuccess(__('Job saved'));
                 $this->_getSession()->setFormData(false);
                 if ($this->getRequest()->getParam('back')) {
                     return $resultRedirect->setPath('*/*/edit', ['id' => $model->getId(), '_current' => true]);
@@ -80,7 +80,7 @@ class Save extends Action
             } catch (RuntimeException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (Exception $e) {
-                $this->messageManager->addException($e, __('Something went wrong while saving the department'));
+                $this->messageManager->addException($e, __('Something went wrong while saving the job'));
             }
 
             $this->_getSession()->setFormData($data);
