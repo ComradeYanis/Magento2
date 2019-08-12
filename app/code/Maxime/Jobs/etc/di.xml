@@ -18,11 +18,13 @@
         </arguments>
     </virtualType>
 
-    <!-- Type for jobs_job_listing_data_source -->
+    <!-- Custom collection factory here -->
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
+                <!-- Type for jobs_department_listing_data_source -->
                 <item name="jobs_department_listing_data_source" xsi:type="string">Maxime\Jobs\Model\ResourceModel\Grid\Department\Collection</item>
+                <!-- Type for jobs_job_listing_data_source -->
                 <item name="jobs_job_listing_data_source" xsi:type="string">Maxime\Jobs\Model\ResourceModel\Grid\Job\Collection</item>
             </argument>
         </arguments>
@@ -61,5 +63,4 @@
             <argument name="resourceModel" xsi:type="string">Maxime\Jobs\Model\ResourceModel\Job</argument>
         </arguments>
     </virtualType>
-
 </config>

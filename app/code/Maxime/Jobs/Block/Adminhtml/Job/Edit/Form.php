@@ -1,5 +1,4 @@
 <?php
-
 namespace Maxime\Jobs\Block\Adminhtml\Job\Edit;
 
 use Magento\Backend\Block\Template\Context;
@@ -18,6 +17,7 @@ use Maxime\Jobs\Model\Source\Job\Status;
  */
 class Form extends Generic
 {
+
     /**
      * @var Store $_systemStore
      */
@@ -38,8 +38,8 @@ class Form extends Generic
      * @param Registry $registry
      * @param FormFactory $formFactory
      * @param Store $systemStore
-     * @param Department $department
      * @param Status $status
+     * @param Department $department
      * @param array $data
      */
     public function __construct(
@@ -47,13 +47,13 @@ class Form extends Generic
         Registry $registry,
         FormFactory $formFactory,
         Store $systemStore,
-        Department $department,
         Status $status,
+        Department $department,
         array $data = []
     ) {
         $this->_systemStore = $systemStore;
-        $this->_department = $department;
         $this->_status = $status;
+        $this->_department = $department;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -66,7 +66,7 @@ class Form extends Generic
     {
         parent::_construct();
         $this->setId('job_form');
-        $this->setTitle(__('Job Information'));
+        $this->setTitle(__('Job Informations'));
     }
 
     /**
@@ -96,33 +96,41 @@ class Form extends Generic
             $fieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
         }
 
+        // Title - Type Text
         $fieldset->addField(
             'title',
             'text',
             ['name' => 'title', 'label' => __('Title'), 'title' => __('Title'), 'required' => true]
         );
 
+        // Type - Type Text
         $fieldset->addField(
             'type',
             'text',
-            ['name' => 'title', 'label' => __('Type'), 'title' => __('Type'), 'required' => true]
+            ['name' => 'type', 'label' => __('Type'), 'title' => __('Type'), 'required' => true]
         );
 
-        if (!$model->getId()) {
-            $model->setDate(date('Y-m-d'));
-        }
+        // Location - Type text
         $fieldset->addField(
             'location',
             'text',
             ['name' => 'location', 'label' => __('Location'), 'title' => __('Location'), 'required' => true]
         );
 
+        // Date - Type date
+        if (!$model->getId()) {
+            $model->setDate(date('Y-m-d')); // Day date when adding a job
+        }
         $fieldset->addField(
             'date',
             'date',
-            ['name' => 'date', 'label' => __('Date'), 'title' => __('Date'), 'required' => false, 'date_format' => 'Y-mm-dd']
+            ['name' => 'date', 'label' => __('Date'), 'title' => __('Date'), 'required' => false, 'date_format' => 'Y-MM-dd']
         );
 
+        // Status - Dropdown
+        if (!$model->getId()) {
+            $model->setStatus('1'); // Enable status when adding a Job
+        }
         $statuses = $this->_status->toOptionArray();
         $fieldset->addField(
             'status',
@@ -130,17 +138,19 @@ class Form extends Generic
             ['name' => 'status', 'label' => __('Status'), 'title' => __('Status'), 'required' => true, 'values' => $statuses]
         );
 
+        // Description - Type textarea
         $fieldset->addField(
             'description',
             'textarea',
             ['name' => 'description', 'label' => __('Description'), 'title' => __('Description'), 'required' => true]
         );
 
+        // Department - Dropdown
         $departments = $this->_department->toOptionArray();
         $fieldset->addField(
             'department_id',
             'select',
-            ['name' => 'department_id', 'label' => __('Department'), 'title' => __('Department'), 'required' => true, 'valuse' => $departments]
+            ['name' => 'department_id', 'label' => __('Department'), 'title' => __('Department'), 'required' => true, 'values' => $departments]
         );
 
         $form->setValues($model->getData());
