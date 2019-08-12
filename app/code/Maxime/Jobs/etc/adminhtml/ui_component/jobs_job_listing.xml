@@ -172,14 +172,12 @@
         <!-- Status Column -->
         <column name="status">
             <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Maxime\Jobs\Model\Source\Job\Status</item>
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">status</item>
-                    <item name="editor" xsi:type="array">
-                        <item name="editorType" xsi:type="string">status</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
-                    </item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
                     <item name="label" xsi:type="string" translate="true">Status</item>
                 </item>
             </argument>
@@ -187,14 +185,12 @@
         <!-- Department Column -->
         <column name="department_id">
             <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Maxime\Jobs\Model\Source\Department</item>
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">department</item>
-                    <item name="editor" xsi:type="array">
-                        <item name="editorType" xsi:type="string">department</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
-                    </item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
                     <item name="label" xsi:type="string" translate="true">Department</item>
                 </item>
             </argument>

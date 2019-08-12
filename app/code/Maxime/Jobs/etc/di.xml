@@ -18,11 +18,12 @@
         </arguments>
     </virtualType>
 
-    <!-- Type for jobs_department_listing_data_source -->
+    <!-- Type for jobs_job_listing_data_source -->
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
                 <item name="jobs_department_listing_data_source" xsi:type="string">Maxime\Jobs\Model\ResourceModel\Grid\Department\Collection</item>
+                <item name="jobs_job_listing_data_source" xsi:type="string">Maxime\Jobs\Model\ResourceModel\Grid\Job\Collection</item>
             </argument>
         </arguments>
     </type>
@@ -34,8 +35,6 @@
             <argument name="resourceModel" xsi:type="string">Maxime\Jobs\Model\ResourceModel\Department</argument>
         </arguments>
     </virtualType>
-
-    <!-- JOB -->
 
     <!-- Create our type JobGridDataProvider -->
     <virtualType name="JobGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
@@ -54,15 +53,6 @@
             </argument>
         </arguments>
     </virtualType>
-
-    <!-- Type for jobs_job_listing_data_source -->
-    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
-        <arguments>
-            <argument name="collections" xsi:type="array">
-                <item name="jobs_job_listing_data_source" xsi:type="string">Maxime\Jobs\Model\ResourceModel\Grid\Job\Collection</item>
-            </argument>
-        </arguments>
-    </type>
 
     <!-- Simulate our class Maxime\Jobs\Model\ResourceModel\Grid\Job\Collection -->
     <virtualType name="Maxime\Jobs\Model\ResourceModel\Grid\Job\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">

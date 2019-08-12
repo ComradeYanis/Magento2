@@ -1,6 +1,6 @@
 <?php
 
-namespace Maxime\Jobs\Block\Adminhtml\Department\Edit;
+namespace Maxime\Jobs\Block\Adminhtml\Job\Edit;
 
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Form\Generic;
@@ -8,11 +8,11 @@ use Magento\Framework\Data\FormFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Registry;
 use Magento\Store\Model\System\Store;
-use Maxime\Jobs\Model\Department;
+use Maxime\Jobs\Model\Job;
 
 /**
  * Class Form
- * @package Maxime\Jobs\Block\Adminhtml\Department\Edit
+ * @package Maxime\Jobs\Block\Adminhtml\Job\Edit
  */
 class Form extends Generic
 {
@@ -47,8 +47,8 @@ class Form extends Generic
     protected function _construct()
     {
         parent::_construct();
-        $this->setId('department_form');
-        $this->setTitle(__('Department Information'));
+        $this->setId('job_form');
+        $this->setTitle(__('Job Information'));
     }
 
     /**
@@ -59,15 +59,15 @@ class Form extends Generic
      */
     protected function _prepareForm()
     {
-        /** @var Department $model */
-        $model = $this->_coreRegistry->registry('jobs_department');
+        /** @var Job $model */
+        $model = $this->_coreRegistry->registry('jobs_job');
 
         /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create(
             ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
         );
 
-        $form->setHtmlIdPrefix('department_');
+        $form->setHtmlIdPrefix('job_');
 
         $fieldset = $form->addFieldset(
             'base_fieldset',
@@ -79,15 +79,45 @@ class Form extends Generic
         }
 
         $fieldset->addField(
-            'name',
+            'title',
             'text',
-            ['name' => 'name', 'label' => __('Department Name'), 'title' => __('Department Name'), 'required' => true]
+            ['name' => 'title', 'label' => __('Title'), 'title' => __('Title'), 'required' => true]
+        );
+
+        $fieldset->addField(
+            'type',
+            'text',
+            ['name' => 'title', 'label' => __('Type'), 'title' => __('Type'), 'required' => true]
+        );
+
+        $fieldset->addField(
+            'location',
+            'text',
+            ['name' => 'location', 'label' => __('Location'), 'title' => __('Location'), 'required' => true]
+        );
+
+        $fieldset->addField(
+            'date',
+            'text',
+            ['name' => 'date', 'label' => __('Date'), 'title' => __('Date'), 'required' => false]
+        );
+
+        $fieldset->addField(
+            'status',
+            'text',
+            ['name' => 'status', 'label' => __('Status'), 'title' => __('Status'), 'required' => true]
         );
 
         $fieldset->addField(
             'description',
             'textarea',
-            ['name' => 'description', 'label' => __('Department Description'), 'title' => __('Department Description'), 'required' => true]
+            ['name' => 'description', 'label' => __('Description'), 'title' => __('Description'), 'required' => true]
+        );
+
+        $fieldset->addField(
+            'department_id',
+            'text',
+            ['name' => 'department_id', 'label' => __('Department'), 'title' => __('Department'), 'required' => true]
         );
 
         $form->setValues($model->getData());
