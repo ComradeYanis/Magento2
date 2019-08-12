@@ -5,6 +5,7 @@ namespace Maxime\Jobs\Block\Job;
 use Magento\Catalog\Block\Breadcrumbs;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Magento\Framework\View\Element\Context;
 use Magento\Framework\View\Element\Template;
 use Maxime\Jobs\Model\Department;
@@ -94,21 +95,15 @@ class ListJob extends Template
     }
 
     /**
-     * @return |null
+     * @return AbstractCollection|null |null
      * @throws LocalizedException
      */
     public function _getJobCollection()
     {
         if ($this->_jobCollection === null) {
 
-            $jobCollection = $this->getCollection()
-                ->addFieldToSelect('*')
-                ->addFieldToFilter('status', $this->_job->getEnableStatus())
-                ->join(
-                    ['department' => $this->_department->getResource()->getMainTable()],
-                    'main_table.department_id = department.' . $this->_job->getIdFieldName(),
-                    ['department_name' => 'name']
-                );
+            $jobCollection = $this->_job->getCollection()
+                ->addStatusFilter($this->_job, $this->_department);
 
             $this->_jobCollection = $jobCollection;
         }
@@ -117,7 +112,7 @@ class ListJob extends Template
     }
 
     /**
-     * @return |null
+     * @return AbstractCollection|null |null
      * @throws LocalizedException
      */
     public function getLoadedJobCollection()
