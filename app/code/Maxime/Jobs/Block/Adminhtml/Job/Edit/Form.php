@@ -9,6 +9,8 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Registry;
 use Magento\Store\Model\System\Store;
 use Maxime\Jobs\Model\Job;
+use Maxime\Jobs\Model\Source\Department;
+use Maxime\Jobs\Model\Source\Job\Status;
 
 /**
  * Class Form
@@ -22,10 +24,22 @@ class Form extends Generic
     protected $_systemStore;
 
     /**
+     * @var Store $_status
+     */
+    protected $_status;
+
+    /**
+     * @var Store $_department
+     */
+    protected $_department;
+
+    /**
      * @param Context $context
      * @param Registry $registry
      * @param FormFactory $formFactory
      * @param Store $systemStore
+     * @param Department $department
+     * @param Status $status
      * @param array $data
      */
     public function __construct(
@@ -33,9 +47,13 @@ class Form extends Generic
         Registry $registry,
         FormFactory $formFactory,
         Store $systemStore,
+        Department $department,
+        Status $status,
         array $data = []
     ) {
         $this->_systemStore = $systemStore;
+        $this->_department = $department;
+        $this->_status = $status;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -90,6 +108,9 @@ class Form extends Generic
             ['name' => 'title', 'label' => __('Type'), 'title' => __('Type'), 'required' => true]
         );
 
+        if (!$model->getId()) {
+            $model->setDate(date('Y-m-d'));
+        }
         $fieldset->addField(
             'location',
             'text',
@@ -98,14 +119,15 @@ class Form extends Generic
 
         $fieldset->addField(
             'date',
-            'text',
-            ['name' => 'date', 'label' => __('Date'), 'title' => __('Date'), 'required' => false]
+            'date',
+            ['name' => 'date', 'label' => __('Date'), 'title' => __('Date'), 'required' => false, 'date_format' => 'Y-mm-dd']
         );
 
+        $statuses = $this->_status->toOptionArray();
         $fieldset->addField(
             'status',
-            'text',
-            ['name' => 'status', 'label' => __('Status'), 'title' => __('Status'), 'required' => true]
+            'select',
+            ['name' => 'status', 'label' => __('Status'), 'title' => __('Status'), 'required' => true, 'values' => $statuses]
         );
 
         $fieldset->addField(
@@ -114,10 +136,11 @@ class Form extends Generic
             ['name' => 'description', 'label' => __('Description'), 'title' => __('Description'), 'required' => true]
         );
 
+        $departments = $this->_department->toOptionArray();
         $fieldset->addField(
             'department_id',
-            'text',
-            ['name' => 'department_id', 'label' => __('Department'), 'title' => __('Department'), 'required' => true]
+            'select',
+            ['name' => 'department_id', 'label' => __('Department'), 'title' => __('Department'), 'required' => true, 'valuse' => $departments]
         );
 
         $form->setValues($model->getData());
