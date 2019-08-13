@@ -20,22 +20,24 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-<!--            <section id="test" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"-->
-<!--                     showInStore="1">-->
-<!--                <label>Test</label>-->
-<!--                <tab>test</tab>-->
-<!--                <resource></resource>-->
-<!--                <group id="test1" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"-->
-<!--                       showInStore="1">-->
-<!--                    <label>Test1</label>-->
-<!--                    <field id="test_list" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"-->
-<!--                           showInStore="1">-->
-<!--                        <label>asdasd</label>-->
-<!--                        <comment>empty</comment>-->
-
-<!--                    </field>-->
-<!--                </group>-->
-<!--            </section>-->
+            <group id="cron" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Cron configuration</label>
+                <field id="schedule" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Schedule</label>
+                    <comment><![CDATA[
+<pre>
+* * * * *
+| | | | |
+| | | | +---- Day of the Week   (range: 1-7, 1 standing for Monday)
+| | | +------ Month of the Year (range: 1-12)
+| | +-------- Day of the Month  (range: 1-31)
+| +---------- Hour              (range: 0-23)
++------------ Minute            (range: 0-59)
+Example: 0 0 * * * Daily at midnight
+</pre>
+                            ]]></comment>
+                </field>
+            </group>
         </section>
     </system>
 </config>
