@@ -5,6 +5,7 @@ namespace Maxime\Jobs\Block\Department;
 use Magento\Catalog\Block\Breadcrumbs;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Element\Template;
+use Magento\Store\Model\ScopeInterface;
 use Maxime\Jobs\Model\Department;
 use Maxime\Jobs\Model\Job;
 
@@ -30,6 +31,11 @@ class View extends Template
     protected $_jobCollection = null;
 
     /**
+     * @const LIST_JOBS_ENABLED
+     */
+    const LIST_JOBS_ENABLED = 'jobs/department/view_list';
+
+    /**
      * ListJob constructor.
      * @param Job $job
      * @param Department $department
@@ -41,9 +47,10 @@ class View extends Template
         Department $department,
         Template\Context $context,
         array $data = []
-    ) {
-        $this->_job         = $job;
-        $this->_department  = $department;
+    )
+    {
+        $this->_job = $job;
+        $this->_department = $department;
 
         parent::__construct($context, $data);
     }
@@ -56,11 +63,11 @@ class View extends Template
     {
         parent::_prepareLayout();
 
-        $department     = $this->getLoadedDepartment();
+        $department = $this->getLoadedDepartment();
 
-        $title          = $department->getName();
-        $description    = __('Look at the jobs we have got for you');
-        $keywords       = __('job,hiring');
+        $title = $department->getName();
+        $description = __('Look at the jobs we have got for you');
+        $keywords = __('job,hiring');
 
         $this->getLayout()->createBlock(Breadcrumbs::class);
 
@@ -70,7 +77,7 @@ class View extends Template
                 [
                     'label' => __('We are hiring'),
                     'title' => __('We are hiring'),
-                    'link'  => $this->getListJobUrl()
+                    'link' => $this->getListJobUrl()
                 ]
             );
             $breadcrumbsBlock->addCrumb(
@@ -78,7 +85,7 @@ class View extends Template
                 [
                     'label' => $title,
                     'title' => $title,
-                    'link'  => false
+                    'link' => false
                 ]
             );
         }
@@ -154,5 +161,13 @@ class View extends Template
     {
         /** @var Job $job */
         return !$job->getId() ? '#' : $this->getUrl('jobs/department/view', ['id' => $job->getId()]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConfigListJobs()
+    {
+        return $this->_scopeConfig->getValue(self::LIST_JOBS_ENABLED, ScopeInterface::SCOPE_STORE);
     }
 }

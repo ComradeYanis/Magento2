@@ -6,11 +6,15 @@ use Maxime\Jobs\Model\Job;
 /** @var Department $department */
 $department = $this->getLoadedDepartment();
 
-/** @var Job[] $jobs */
-$jobCollection       = $this->getLoadedJobsCollection();
+if ($this->getConfigListJobs()) {
+    /** @var Job[] $jobs */
+    $jobCollection       = $this->getLoadedJobsCollection();
 
-$iterator = 1;
-$total = $jobCollection->count();
+    $iterator = 1;
+    $total = $jobCollection->count();
+} else {
+    $total = 0;
+}
 
 ?>
 <?php if ($department->getId()) : ?>
