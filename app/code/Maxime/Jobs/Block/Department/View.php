@@ -88,7 +88,6 @@ class View extends Template
         $this->pageConfig->setKeywords($keywords);
 
         $pageMainTitle = $this->getLayout()->getBlock('page.main.title');
-
         if ($pageMainTitle) {
             $pageMainTitle->setPageTitle($title);
         }
@@ -97,33 +96,9 @@ class View extends Template
     }
 
     /**
-     * @return Job[]
-     */
-    public function _getJobsCollection()
-    {
-        if (!$this->_jobCollection === null && $this->_department->getId()) {
-            $jobCollection  = $this->_job->getCollection()
-                ->addFieldToFilter('department_id', $this->_department->getId())
-                ->addStatusFilter($this->_job, $this->_department);
-
-            $this->_jobCollection = $jobCollection;
-        }
-
-        return $this->_jobCollection;
-    }
-
-    /**
-     * @return Job[]
-     */
-    public function getLoadedJobsCollection()
-    {
-        return $this->_getJobsCollection();
-    }
-
-    /**
      * @return Department
      */
-    public function _getDepartment()
+    protected function _getDepartment()
     {
         if (!$this->_department->getId()) {
             $entityId = $this->_request->getParam('id');
@@ -139,6 +114,28 @@ class View extends Template
     public function getLoadedDepartment()
     {
         return $this->_getDepartment();
+    }
+
+    /**
+     * @return Job[]
+     */
+    protected function _getJobsCollection()
+    {
+        if ($this->_jobCollection === null && $this->_department->getId()) {
+            $jobCollection = $this->_job->getCollection()
+                ->addFieldToFilter('department_id', $this->_department->getId())
+                ->addStatusFilter($this->_job, $this->_department);
+            $this->_jobCollection = $jobCollection;
+        }
+        return $this->_jobCollection;
+    }
+
+    /**
+     * @return Job[]
+     */
+    public function getLoadedJobsCollection()
+    {
+        return $this->_getJobsCollection();
     }
 
     /**

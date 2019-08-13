@@ -1,1 +1,28 @@
 <?php
+
+use Maxime\Jobs\Model\Department;
+use Maxime\Jobs\Model\Job;
+
+/** @var Job $job */
+$job = $this->getLoadedJob();
+
+/** @var Department $department */
+$department = $this->getLoadedDepartment();
+?>
+
+<?php if ($job->getId()) : ?>
+    <div class="job-view-wrapper">
+        <div class="department_name">
+            <?= __('Department : ') ?>
+            <a href="<?= $this->getDepartmentUrl($job) ?>" title="<?= $department->getName() ?>">
+                <?= $department->getName() ?>
+            </a>
+        </div>
+        <div class="type"><?= $job->getType() ?></div>
+        <div class="location"><?= $job->getLocation() ?></div>
+        <div class="date"><?= $this->formatDate($job->getDate()) ?></div>
+        <div class="description"><?= $job->getDescription() ?></div>
+    </div>
+<?php else : ?>
+    <?= __('This job does not exist'); ?>
+<?php endif; ?>

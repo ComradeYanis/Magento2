@@ -1,40 +1,47 @@
 <?php
-/** @var \Maxime\Jobs\Model\Department $department */
-$department = $this->getLoadedDepartmentCollection();
+
+use Maxime\Jobs\Model\Department;
+use Maxime\Jobs\Model\Job;
+
+/** @var Department $department */
+$department = $this->getLoadedDepartment();
+
+/** @var Job[] $jobs */
+$jobCollection       = $this->getLoadedJobsCollection();
 
 $iterator = 1;
-$total = $department->getJobsCount();
+$total = $jobCollection->count();
+
 ?>
-<div class="department-view">
-    <div class="department_name">
-        <?= __('Department :') ?>
-        <h1><?= $department->getTitle() ?></h1>
+<?php if ($department->getId()) : ?>
+    <div class="department-view-wrapper">
+        <div class="description"><?= $department->getDescription() ?></div>
     </div>
-    <div class="department_desctiprion">
-        <?= $department->getDescription() ?>
-    </div>
-</div>
-<div class="job-wrapper">
-    <ol class="jobs list">
+    <?php if ($total): ?>
+        <h2><?= __('Jobs for this department') ?></h2>
         <?php foreach ($jobCollection as $job): ?>
-            <li class="item<?= ($iterator == 1) ? ' first' : '' ?><?= ($total == $iterator) ? ' last' : '' ?>">
-                <div class="title">
-                    <a href="<?= $this->getJobUrl($job) ?>" title="<?= $job->getTitle() ?>">
-                        <?= $job->getTitle() ?>
-                    </a>
-                </div>
-                <div class="department_name">
-                    <?= __('Department : ') ?>
-                    <a href="<?= $this->getDepartmentUrl($job) ?>" title="<?= $job->getDepartmentName() ?>">
-                        <?= $job->getDepartmentName() ?>
-                    </a>
-                </div>
-                <div class="type"><?= $job->getType() ?></div>
-                <div class="location"><?= $job->getLocation() ?></div>
-                <div class="date"><?= $this->formatDate($job->getDate()) ?></div>
-                <div class="description"><?= $job->getDescription() ?></div>
-            </li>
+            <ol class="jobs list">
+                <li class="item<?= ($iterator == 1) ? ' first' : ''; ?><?= ($total == $iterator) ? ' last' : '' ?>">
+                    <div class="title">
+                        <a href="<?= $this->getJobUrl($job) ?>" title="<?= $job->getTitle() ?>">
+                            <?= $job->getTitle(); ?>
+                        </a>
+                    </div>
+                    <div class="department_name">
+                        <?= __('Department : '); ?>
+                        <a href="<?= $this->getDepartmentUrl($job) ?>" title="<?= $job->getDepartmentName() ?>">
+                            <?= $job->getDepartmentName() ?>
+                        </a>
+                    </div>
+                    <div class="type"><?= $job->getType() ?></div>
+                    <div class="location"><?= $job->getLocation() ?></div>
+                    <div class="date"><?= $this->formatDate($job->getDate()) ?></div>
+                    <div class="description"><?= $job->getDescription() ?></div>
+                </li>
+            </ol>
             <?php $iterator++; ?>
         <?php endforeach; ?>
-    </ol>
-</div>
+    <?php endif; ?>
+<?php else : ?>
+    <?= __('This department does not exist') ?>
+<?php endif; ?>
