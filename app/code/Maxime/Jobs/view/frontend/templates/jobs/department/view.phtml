@@ -1,9 +1,19 @@
 <?php
-    $jobCollection = $this->getLoadedJobCollection();
-    $iterator = 1;
-    $total = $jobCollection->count();
-?>
+/** @var \Maxime\Jobs\Model\Department $department */
+$department = $this->getLoadedDepartmentCollection();
 
+$iterator = 1;
+$total = $department->getJobsCount();
+?>
+<div class="department-view">
+    <div class="department_name">
+        <?= __('Department :') ?>
+        <h1><?= $department->getTitle() ?></h1>
+    </div>
+    <div class="department_desctiprion">
+        <?= $department->getDescription() ?>
+    </div>
+</div>
 <div class="job-wrapper">
     <ol class="jobs list">
         <?php foreach ($jobCollection as $job): ?>
