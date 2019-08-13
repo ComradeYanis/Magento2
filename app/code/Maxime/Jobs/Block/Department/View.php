@@ -6,6 +6,7 @@ use Magento\Catalog\Block\Breadcrumbs;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Element\Template;
 use Magento\Store\Model\ScopeInterface;
+use Maxime\Jobs\Helper\Data;
 use Maxime\Jobs\Model\Department;
 use Maxime\Jobs\Model\Job;
 
@@ -31,26 +32,28 @@ class View extends Template
     protected $_jobCollection = null;
 
     /**
-     * @const LIST_JOBS_ENABLED
+     * @var Data $_helper
      */
-    const LIST_JOBS_ENABLED = 'jobs/department/view_list';
+    protected $_helper;
 
     /**
      * ListJob constructor.
      * @param Job $job
      * @param Department $department
      * @param Template\Context $context
+     * @param Data $helper
      * @param array $data
      */
     public function __construct(
         Job $job,
         Department $department,
         Template\Context $context,
+        Data $helper,
         array $data = []
-    )
-    {
+    ) {
         $this->_job = $job;
         $this->_department = $department;
+        $this->_helper = $helper;
 
         parent::__construct($context, $data);
     }
@@ -168,6 +171,6 @@ class View extends Template
      */
     public function getConfigListJobs()
     {
-        return $this->_scopeConfig->getValue(self::LIST_JOBS_ENABLED, ScopeInterface::SCOPE_STORE);
+        return $this->_helper->getListJobEnabled();
     }
 }
