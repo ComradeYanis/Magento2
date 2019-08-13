@@ -63,4 +63,19 @@
             <argument name="resourceModel" xsi:type="string">Maxime\Jobs\Model\ResourceModel\Job</argument>
         </arguments>
     </virtualType>
+
+    <!-- Logger and Handler -->
+    <type name="Maxime\Jobs\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Maxime\Jobs\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">maximeJobs</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Maxime\Jobs\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

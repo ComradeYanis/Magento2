@@ -6,7 +6,7 @@ use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
-use Psr\Log\LoggerInterface;
+use Maxime\Jobs\Logger\Logger;
 
 /**
  * Class TestLog
@@ -14,20 +14,20 @@ use Psr\Log\LoggerInterface;
  */
 class TestLog extends Action
 {
-
     /**
-     * @var LoggerInterface $_logger
+     * Logger
+     *
+     * @var Logger $_logger
      */
     protected $_logger;
 
     /**
-     * TestLog constructor.
      * @param Context $context
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      */
     public function __construct(
         Context $context,
-        LoggerInterface $logger
+        Logger $logger
     ) {
         $this->_logger = $logger;
         parent::__construct($context);
@@ -38,7 +38,14 @@ class TestLog extends Action
      */
     public function execute()
     {
-        var_dump(get_class($this->_logger));
+        $this->_logger->addDebug('My debug log');
+        $this->_logger->addInfo('My info log');
+        $this->_logger->addNotice('My notice log');
+        $this->_logger->addWarning('My warning log');
+        $this->_logger->addError('My error log');
+        $this->_logger->addCritical('My critical log');
+        $this->_logger->addAlert('My alert log');
+        $this->_logger->addEmergency('My emergency log');
 
         $this->_view->loadLayout();
         $this->_view->getLayout()->initMessages();
