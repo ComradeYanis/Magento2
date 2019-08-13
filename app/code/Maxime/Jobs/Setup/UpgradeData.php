@@ -2,6 +2,7 @@
 
 namespace Maxime\Jobs\Setup;
 
+use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
@@ -26,14 +27,22 @@ class UpgradeData implements UpgradeDataInterface
     protected $_job;
 
     /**
+     * @var Config $_resourceConfig
+     */
+    protected $_resourceConfig;
+
+    /**
      * UpgradeData constructor.
      * @param Department $department
      * @param Job $job
+     * @param Config $resourceConfig
      */
-    public function __construct(Department $department, Job $job)
+    public function __construct(Department $department, Job $job, Config $resourceConfig)
     {
         $this->_department = $department;
         $this->_job = $job;
+
+        $this->_resourceConfig = $resourceConfig;
     }
 
     /**
@@ -85,7 +94,7 @@ class UpgradeData implements UpgradeDataInterface
                     'title' => 'Sample Marketing Job 1',
                     'type' => 'CDI',
                     'location' => 'Paris, France',
-                    'date'  => '2016-01-05',
+                    'date' => '2016-01-05',
                     'status' => $this->_job->getEnableStatus(),
                     'description' => 'Duplexque isdem diebus acciderat malum, quod et Theophilum insontem atrox
                 interceperat casus, et Serenianus dignus exsecratione cunctorum, innoxius, modo non reclamante publico vigore,
@@ -96,7 +105,7 @@ class UpgradeData implements UpgradeDataInterface
                     'title' => 'Sample Marketing Job 2',
                     'type' => 'CDI',
                     'location' => 'Paris, France',
-                    'date'  => '2016-01-10',
+                    'date' => '2016-01-10',
                     'status' => $this->_job->getDisableStatus(),
                     'description' => 'Duplexque isdem diebus acciderat malum, quod et Theophilum insontem atrox
                 interceperat casus, et Serenianus dignus exsecratione cunctorum, innoxius, modo non reclamante publico vigore,
@@ -107,7 +116,7 @@ class UpgradeData implements UpgradeDataInterface
                     'title' => 'Sample Technical Support Job 1',
                     'type' => 'CDD',
                     'location' => 'Lille, France',
-                    'date'  => '2016-02-01',
+                    'date' => '2016-02-01',
                     'status' => $this->_job->getEnableStatus(),
                     'description' => 'Duplexque isdem diebus acciderat malum, quod et Theophilum insontem atrox
                 interceperat casus, et Serenianus dignus exsecratione cunctorum, innoxius, modo non reclamante publico vigore,
@@ -118,7 +127,7 @@ class UpgradeData implements UpgradeDataInterface
                     'title' => 'Sample Human Resource Job 1',
                     'type' => 'CDI',
                     'location' => 'Paris, France',
-                    'date'  => '2016-01-01',
+                    'date' => '2016-01-01',
                     'status' => $this->_job->getEnableStatus(),
                     'description' => 'Duplexque isdem diebus acciderat malum, quod et Theophilum insontem atrox
                 interceperat casus, et Serenianus dignus exsecratione cunctorum, innoxius, modo non reclamante publico vigore,
@@ -130,6 +139,11 @@ class UpgradeData implements UpgradeDataInterface
             foreach ($jobs as $data) {
                 $this->_job->setData($data)->save();
             }
+        }
+
+        // Action to do if module version is less than 1.0.0.3
+        if (version_compare($context->getVersion(), '1.0.0.3') < 0) {
+            $this->_resourceConfig->saveConfig('jobs/department/view_list', 1, 'default', 0);
         }
 
         $installer->endSetup();

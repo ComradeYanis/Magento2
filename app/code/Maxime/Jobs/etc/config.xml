@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <jobs>
+            <department>
+                <view_list>1</view_list>
+            </department>
+        </jobs>
+    </default>
+
+    <websites>
+        <websitecode>
+            <jobs>
+                <department>
+                    <view_list>1</view_list>
+                </department>
+            </jobs>
+        </websitecode>
+    </websites>
+
+    <stores>
+        <storeviewcode>
+            <jobs>
+                <department>
+                    <view_list>1</view_list>
+                </department>
+            </jobs>
+        </storeviewcode>
+    </stores>
+</config>
