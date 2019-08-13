@@ -1,20 +1,18 @@
 <?php
 
-namespace Maxime\Jobs\Block\Job;
+namespace Maxime\Jobs\Block\Department;
 
 use Magento\Catalog\Block\Breadcrumbs;
-use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Magento\Framework\View\Element\Template;
 use Maxime\Jobs\Model\Department;
 use Maxime\Jobs\Model\Job;
 
 /**
- * Class ListJob
- * @package Maxime\Jobs\Block\Job
+ * Class View
+ * @package Maxime\Jobs\Block\Department
  */
-class ListJob extends Template
+class View extends Template
 {
     /**
      * @var Job $_job
@@ -27,30 +25,25 @@ class ListJob extends Template
     protected $_department;
 
     /**
-     * @var ResourceConnection
+     * @var Job[] $_jobCollection
      */
-    protected $_resource;
-
     protected $_jobCollection = null;
 
     /**
      * ListJob constructor.
      * @param Job $job
      * @param Department $department
-     * @param ResourceConnection $resource
      * @param Template\Context $context
      * @param array $data
      */
     public function __construct(
         Job $job,
         Department $department,
-        ResourceConnection $resource,
         Template\Context $context,
         array $data = []
     ) {
         $this->_job         = $job;
         $this->_department  = $department;
-        $this->_resource    = $resource;
 
         parent::__construct($context, $data);
     }
@@ -63,7 +56,9 @@ class ListJob extends Template
     {
         parent::_prepareLayout();
 
-        $title          = __('We are hiring');
+        $department     = $this->getLoadedDepartment();
+
+        $title          = $department->getName();
         $description    = __('Look at the jobs we have got for you');
         $keywords       = __('job,hiring');
 
@@ -73,9 +68,17 @@ class ListJob extends Template
             $breadcrumbsBlock->addCrumb(
                 'jobs',
                 [
+                    'label' => __('We are hiring'),
+                    'title' => __('We are hiring'),
+                    'link'  => $this->getListJobUrl()
+                ]
+            );
+            $breadcrumbsBlock->addCrumb(
+                'job',
+                [
                     'label' => $title,
                     'title' => $title,
-                    'link'  => false // No link for the last element
+                    'link'  => false
                 ]
             );
         }
@@ -94,13 +97,13 @@ class ListJob extends Template
     }
 
     /**
-     * @return AbstractCollection|null |null
+     * @return Job[]
      */
-    public function _getJobCollection()
+    public function _getJobsCollection()
     {
-        if ($this->_jobCollection === null) {
-
-            $jobCollection = $this->_job->getCollection()
+        if (!$this->_jobCollection === null && $this->_department->getId()) {
+            $jobCollection  = $this->_job->getCollection()
+                ->addFieldToFilter('department_id', $this->_department->getId())
                 ->addStatusFilter($this->_job, $this->_department);
 
             $this->_jobCollection = $jobCollection;
@@ -110,11 +113,40 @@ class ListJob extends Template
     }
 
     /**
-     * @return AbstractCollection|null |null
+     * @return Job[]
      */
-    public function getLoadedJobCollection()
+    public function getLoadedJobsCollection()
     {
-        return $this->_getJobCollection();
+        return $this->_getJobsCollection();
+    }
+
+    /**
+     * @return Department
+     */
+    public function _getDepartment()
+    {
+        if (!$this->_department->getId()) {
+            $entityId = $this->_request->getParam('id');
+            $this->_department = $this->_department->load($entityId);
+        }
+
+        return $this->_department;
+    }
+
+    /**
+     * @return Department
+     */
+    public function getLoadedDepartment()
+    {
+        return $this->_getDepartment();
+    }
+
+    /**
+     * @return string
+     */
+    public function getListJobUrl()
+    {
+        return $this->getUrl('jobs/job');
     }
 
     /**
@@ -124,16 +156,6 @@ class ListJob extends Template
     public function getJobUrl($job)
     {
         /** @var Job $job */
-        return !$job->getId() ? '#' : $this->getUrl('jobs/job/view', ['id' => $job->getId()]);
-    }
-
-    /**
-     * @param $job
-     * @return string
-     */
-    public function getDepartmentUrl($job)
-    {
-        /** @var Job $job */
-        return !$job->getId() ? '#' : $this->getUrl('jobs/department/view', ['id' => $job->getDepartmentId()]);
+        return !$job->getId() ? '#' : $this->getUrl('jobs/department/view', ['id' => $job->getId()]);
     }
 }
