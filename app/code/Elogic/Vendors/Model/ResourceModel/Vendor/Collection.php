@@ -30,12 +30,11 @@ class Collection extends AbstractCollection
     /**
      * @param Vendor $vendor
      * @return Collection
-     * @throws LocalizedException
      */
     public function addStatusFilter($vendor)
     {
         $this->addFieldToSelect('*')
-            ->addFieldToFilter('status', $vendor->getEnableStatus()) // AND
+//            ->addFieldToFilter('status', $vendor->getEnableStatus()) // AND
 //            ->addFieldToFilter('status', ['eq' => $job->getEnableStatus()]) // AND
 //        ->addFieldToFilter('date', ['qt' => date('Y-m-d')])     // AND
 //        ->addFieldToFilter(['status,date'], ['eq' => $job->getEnableStatus(), 'qt' => date('Y-m-d')]) //OR

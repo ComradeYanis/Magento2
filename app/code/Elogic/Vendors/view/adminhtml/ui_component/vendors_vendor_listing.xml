@@ -5,7 +5,8 @@
  * See COPYING.txt for license details.
  */
 -->
-<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <!-- Integration -->
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
@@ -73,7 +74,9 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="columnsData" xsi:type="array">
-                        <item name="provider" xsi:type="string">vendors_vendor_listing.vendors_vendor_listing.vendors_vendor_columns</item>
+                        <item name="provider" xsi:type="string">
+                            vendors_vendor_listing.vendors_vendor_listing.vendors_vendor_columns
+                        </item>
                     </item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
                     <item name="displayArea" xsi:type="string">dataGridActions</item>
@@ -87,14 +90,18 @@
             <item name="config" xsi:type="array">
                 <!-- Bookmarks behaviour -->
                 <item name="storageConfig" xsi:type="array">
-                    <item name="provider" xsi:type="string">vendors_vendor_listing.vendors_vendor_listing.listing_top.bookmarks</item>
+                    <item name="provider" xsi:type="string">
+                        vendors_vendor_listing.vendors_vendor_listing.listing_top.bookmarks
+                    </item>
                     <item name="namespace" xsi:type="string">current</item>
                 </item>
                 <item name="childDefaults" xsi:type="array">
                     <item name="controlVisibility" xsi:type="boolean">true</item>
                     <!-- Bookmarks behaviour -->
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">vendors_vendor_listing.vendors_vendor_listing.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">
+                            vendors_vendor_listing.vendors_vendor_listing.listing_top.bookmarks
+                        </item>
                         <item name="root" xsi:type="string">columns.${ $.index }</item>
                         <item name="namespace" xsi:type="string">current.${ $.storageConfig.root}</item>
                     </item>
