@@ -44,7 +44,7 @@ class Index extends Action
     {
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('Elogic_Vendors::vendor');
+        $resultPage->setActiveMenu(self::ADMIN_RESOURCE);
         $resultPage->addBreadcrumb(__('Vendors'), __('Vendors'));
         $resultPage->addBreadcrumb(__('Manage Vendors'), __('Manage Vendors'));
         $resultPage->getConfig()->getTitle()->prepend(__('Vendor'));

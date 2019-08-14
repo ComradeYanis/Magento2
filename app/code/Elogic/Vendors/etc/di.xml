@@ -21,7 +21,7 @@
     <!-- Simulate our class Elogic\Jobs\Model\ResourceModel\Grid\Vendor\Collection -->
     <virtualType name="Elogic\Vendors\Model\ResourceModel\Grid\Vendor\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
-            <argument name="mainTable" xsi:type="string">Elogic_Vendor</argument>
+            <argument name="mainTable" xsi:type="string">elogic_vendor</argument>
             <argument name="resourceModel" xsi:type="string">Elogic\Vendors\Model\ResourceModel\Vendor</argument>
         </arguments>
     </virtualType>
