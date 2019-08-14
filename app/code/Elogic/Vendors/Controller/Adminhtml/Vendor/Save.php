@@ -2,12 +2,12 @@
 
 namespace Elogic\Vendors\Controller\Adminhtml\Vendor;
 
+use Elogic\Vendors\Model\Vendor;
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Elogic\Vendors\Model\Vendor;
 use RuntimeException;
 
 /**
@@ -49,6 +49,7 @@ class Save extends Action
     public function execute()
     {
         $data = $this->getRequest()->getPostValue();
+        $data['logo'] = $this->_request->getFiles('logo');
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
@@ -58,6 +59,10 @@ class Save extends Action
             $id = $this->getRequest()->getParam('id');
             if ($id) {
                 $model->load($id);
+            }
+
+            if (isset($data['logo']) && is_array($data['logo'])) {
+                $data['logo'] = $data['logo']['name'];
             }
 
             $model->setData($data);

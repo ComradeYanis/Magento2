@@ -36,7 +36,8 @@ class Form extends Generic
         FormFactory $formFactory,
         Store $systemStore,
         array $data = []
-    ) {
+    )
+    {
         $this->_systemStore = $systemStore;
 
         parent::__construct($context, $registry, $formFactory, $data);
@@ -64,7 +65,7 @@ class Form extends Generic
 
         /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create(
-            ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
+            ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post', 'enctype' => 'multipart/form-data']]
         );
 
         $form->setHtmlIdPrefix('vendor_');
@@ -98,6 +99,15 @@ class Form extends Generic
             'date',
             'date',
             ['name' => 'date', 'label' => __('Date'), 'title' => __('Date'), 'required' => false, 'date_format' => 'Y-MM-dd']
+        );
+
+        $fieldset->addField(
+            'logo',
+            'image',
+            ['name' => 'logo', 'label' => __('Logo'), 'title' => __('Logo'), ' required' => false,
+                'note' => '(*.jpg, *.png, *.gif)',
+                'formElement' => 'FileUploader', 'elementTmpl' => 'ui/form/element/uploader/uploader',
+                'uploaderConfig' => ['name' => 'url', 'type' => 'url', 'path' => 'vendor/cms_image/upload']]
         );
 
         $form->setValues($model->getData());

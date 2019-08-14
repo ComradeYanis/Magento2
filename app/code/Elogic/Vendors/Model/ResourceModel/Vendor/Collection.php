@@ -3,7 +3,6 @@
 namespace Elogic\Vendors\Model\ResourceModel\Vendor;
 
 use Elogic\Vendors\Model\Vendor;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
