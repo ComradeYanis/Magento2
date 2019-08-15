@@ -2,11 +2,12 @@
 
 namespace Elogic\Vendors\Controller\Adminhtml\Vendor;
 
+use Elogic\Vendors\Model\Vendor;
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultInterface;
-use Elogic\Vendors\Model\Vendor;
+use Magento\Framework\Filesystem\Driver\File;
 
 /**
  * Class Delete
@@ -21,15 +22,23 @@ class Delete extends Action
     protected $_model;
 
     /**
+     * @var File $_file
+     */
+    protected $_file;
+
+    /**
      * @param Action\Context $context
      * @param Vendor $model
+     * @param File $file
      */
     public function __construct(
         Action\Context $context,
-        Vendor $model
+        Vendor $model,
+        File $file
     ) {
         parent::__construct($context);
-        $this->_model = $model;
+        $this->_model   = $model;
+        $this->_file    = $file;
     }
 
     /**
@@ -54,6 +63,14 @@ class Delete extends Action
             try {
                 $model = $this->_model;
                 $model->load($id);
+                $logo = $model->getLogo();
+                if (isset($logo) && strlen($logo)) {
+                    try {
+                        $this->_file->deleteFile($logo);
+                    } catch (Exception $e) {
+                        $this->messageManager->addError($e->getMessage());
+                    }
+                }
                 $model->delete();
                 $this->messageManager->addSuccess(__('Vendor deleted'));
                 return $resultRedirect->setPath('*/*/');
