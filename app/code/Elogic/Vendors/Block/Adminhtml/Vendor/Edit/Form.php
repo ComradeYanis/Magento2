@@ -104,10 +104,13 @@ class Form extends Generic
         $fieldset->addField(
             'logo',
             'image',
-            ['name' => 'logo', 'label' => __('Logo'), 'title' => __('Logo'), ' required' => false,
+            [
+                'name' => 'logo', 'label' => __('Logo'), 'title' => __('Logo'), ' required' => false,
                 'note' => '(*.jpg, *.png, *.gif)',
-                'formElement' => 'FileUploader', 'elementTmpl' => 'ui/form/element/uploader/uploader',
-                'uploaderConfig' => ['name' => 'url', 'type' => 'url', 'path' => 'vendor/cms_image/upload']]
+                'formElement' => 'fileUploader', 'elementTmpl' => 'ui/form/element/uploader/uploader',
+                'previewTmpl' => 'Magento_Catalog/image-preview',
+                'uploaderConfig' => ['name' => 'url', 'type' => 'url', 'path' => 'vendor/cms_image/upload']
+            ]
         );
 
         $form->setValues($model->getData());

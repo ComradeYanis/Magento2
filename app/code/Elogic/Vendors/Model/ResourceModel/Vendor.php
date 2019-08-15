@@ -18,6 +18,6 @@ class Vendor extends AbstractDb
      */
     protected function _construct()
     {
-        $this->_init('elogic_vensuka', 'entity_id');
+        $this->_init('elogic_vendor', 'entity_id');
     }
 }

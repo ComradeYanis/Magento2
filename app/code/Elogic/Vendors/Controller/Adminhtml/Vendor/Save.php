@@ -6,8 +6,12 @@ use Elogic\Vendors\Model\Vendor;
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Filesystem;
+use Magento\Framework\Image\AdapterFactory;
+use Magento\MediaStorage\Model\File\UploaderFactory;
 use RuntimeException;
 
 /**
@@ -22,15 +26,39 @@ class Save extends Action
     protected $_model;
 
     /**
+     * @var UploaderFactory $_uploader
+     */
+    protected $_uploader;
+
+    /**
+     * @var AdapterFactory $_adapterFactory
+     */
+    protected $_adapterFactory;
+
+    /**
+     * @var Filesystem $_fileSystem
+     */
+    protected $_fileSystem;
+
+    /**
      * @param Action\Context $context
      * @param Vendor $model
+     * @param UploaderFactory $uploader
+     * @param AdapterFactory $adapterFactory
+     * @param Filesystem $filesystem
      */
     public function __construct(
         Action\Context $context,
-        Vendor $model
+        Vendor $model,
+        UploaderFactory $uploader,
+        AdapterFactory $adapterFactory,
+        Filesystem $filesystem
     ) {
+        $this->_uploader        = $uploader;
+        $this->_adapterFactory  = $adapterFactory;
+        $this->_fileSystem      = $filesystem;
+        $this->_model           = $model;
         parent::__construct($context);
-        $this->_model = $model;
     }
 
     /**
@@ -49,7 +77,6 @@ class Save extends Action
     public function execute()
     {
         $data = $this->getRequest()->getPostValue();
-        $data['logo'] = $this->_request->getFiles('logo');
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
@@ -61,8 +88,36 @@ class Save extends Action
                 $model->load($id);
             }
 
-            if (isset($data['logo']) && is_array($data['logo'])) {
-                $data['logo'] = $data['logo']['name'];
+            $file = $this->_request->getFiles('logo');
+            if (isset($file) && isset($file['name']) && strlen($file['name'])) {
+                try {
+                    $base_media_path = 'elogic/vendors/images';
+                    $uploader = $this->_uploader->create(['fileId' => 'logo']);
+                    $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
+                    $imageAdapter = $this->_adapterFactory->create();
+
+                    $uploader->addValidateCallback('logo', $imageAdapter, 'validateUploadFile');
+                    $uploader->setAllowRenameFiles(true);
+                    $uploader->setFilesDispersion(true);
+
+                    $mediaDirectory = $this->_fileSystem->getDirectoryRead(DirectoryList::MEDIA);
+                    $result = $uploader->save($mediaDirectory->getAbsolutePath($base_media_path));
+
+                    $data['logo'] = $base_media_path . $result['file'];
+                } catch (Exception $e) {
+                    $this->messageManager->addError($e->getMessage());
+                }
+            } else {
+                if (isset($data['logo']) && isset($data['logo']['value'])) {
+                    if (isset($data['logo']['delete'])) {
+                        $data['logo']           = null;
+                        $data['delete_logo']    = true;
+                    } elseif (isset($data['logo']['value'])) {
+                        $data['logo'] = $data['logo']['value'];
+                    } else {
+                        $data['logo'] = null;
+                    }
+                }
             }
 
             $model->setData($data);
