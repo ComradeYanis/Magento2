@@ -5,7 +5,8 @@
  * See COPYING.txt for license details.
  */
 -->
-<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <!-- Integration -->
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
@@ -73,7 +74,9 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="columnsData" xsi:type="array">
-                        <item name="provider" xsi:type="string">vendors_vendor_listing.vendors_vendor_listing.vendors_vendor_columns</item>
+                        <item name="provider" xsi:type="string">
+                            vendors_vendor_listing.vendors_vendor_listing.vendors_vendor_columns
+                        </item>
                     </item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
                     <item name="displayArea" xsi:type="string">dataGridActions</item>
@@ -87,14 +90,18 @@
             <item name="config" xsi:type="array">
                 <!-- Bookmarks behaviour -->
                 <item name="storageConfig" xsi:type="array">
-                    <item name="provider" xsi:type="string">vendors_vendor_listing.vendors_vendor_listing.listing_top.bookmarks</item>
+                    <item name="provider" xsi:type="string">
+                        vendors_vendor_listing.vendors_vendor_listing.listing_top.bookmarks
+                    </item>
                     <item name="namespace" xsi:type="string">current</item>
                 </item>
                 <item name="childDefaults" xsi:type="array">
                     <item name="controlVisibility" xsi:type="boolean">true</item>
                     <!-- Bookmarks behaviour -->
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">vendors_vendor_listing.vendors_vendor_listing.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">
+                            vendors_vendor_listing.vendors_vendor_listing.listing_top.bookmarks
+                        </item>
                         <item name="root" xsi:type="string">columns.${ $.index }</item>
                         <item name="namespace" xsi:type="string">current.${ $.storageConfig.root}</item>
                     </item>
@@ -140,6 +147,20 @@
                 </item>
             </argument>
         </column>
+
+        <!-- Logo Column -->
+        <column name="logo" class="Elogic\Vendors\Ui\Component\Listing\Column\Thumbnail">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/thumbnail</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="altField" xsi:type="string">name</item>
+                    <item name="has_preview" xsi:type="string">1</item>
+                    <item name="label" xsi:type="string" translate="true">Logo</item>
+                </item>
+            </argument>
+        </column>
+
         <!-- Date Column -->
         <column name="date">
             <argument name="data" xsi:type="array">
@@ -155,19 +176,6 @@
                 </item>
             </argument>
         </column>
-        <!-- Department Column -->
-<!--        <column name="department_id">-->
-<!--            <argument name="data" xsi:type="array">-->
-<!--                <item name="options" xsi:type="object">Maxime\Jobs\Model\Source\Department</item>-->
-<!--                <item name="config" xsi:type="array">-->
-<!--                    <item name="filter" xsi:type="string">select</item>-->
-<!--                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>-->
-<!--                    <item name="editor" xsi:type="string">select</item>-->
-<!--                    <item name="dataType" xsi:type="string">select</item>-->
-<!--                    <item name="label" xsi:type="string" translate="true">Department</item>-->
-<!--                </item>-->
-<!--            </argument>-->
-<!--        </column>-->
 
         <!-- Action columns -->
         <actionsColumn name="actions" class="Elogic\Vendors\Ui\Component\Listing\Column\VendorActions">

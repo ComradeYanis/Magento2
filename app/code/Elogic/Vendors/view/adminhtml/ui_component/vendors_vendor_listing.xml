@@ -147,6 +147,20 @@
                 </item>
             </argument>
         </column>
+
+        <!-- Title Column -->
+        <column name="logo" class="Elogic\Vendors\Ui\Component\Listing\Column\Thumbnail">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/thumbnail</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="altField" xsi:type="string">name</item>
+                    <item name="has_preview" xsi:type="string">1</item>
+                    <item name="label" xsi:type="string" translate="true">Logo</item>
+                </item>
+            </argument>
+        </column>
+
         <!-- Date Column -->
         <column name="date">
             <argument name="data" xsi:type="array">
