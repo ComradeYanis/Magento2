@@ -4,10 +4,12 @@ namespace Elogic\Vendors\Controller\Adminhtml\Vendor;
 
 use Elogic\Vendors\Model\Vendor;
 use Exception;
+use File;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Image\AdapterFactory;
@@ -41,23 +43,31 @@ class Save extends Action
     protected $_fileSystem;
 
     /**
+     * @var Filesystem\Driver\File $_file
+     */
+    protected $_file;
+
+    /**
      * @param Action\Context $context
      * @param Vendor $model
      * @param UploaderFactory $uploader
      * @param AdapterFactory $adapterFactory
      * @param Filesystem $filesystem
+     * @param Filesystem\Driver\File $file
      */
     public function __construct(
         Action\Context $context,
         Vendor $model,
         UploaderFactory $uploader,
         AdapterFactory $adapterFactory,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        Filesystem\Driver\File $file
     ) {
         $this->_uploader        = $uploader;
         $this->_adapterFactory  = $adapterFactory;
         $this->_fileSystem      = $filesystem;
         $this->_model           = $model;
+        $this->_file            = $file;
         parent::__construct($context);
     }
 
@@ -73,6 +83,7 @@ class Save extends Action
      * Save action
      *
      * @return ResultInterface
+     * @throws FileSystemException
      */
     public function execute()
     {
@@ -112,6 +123,13 @@ class Save extends Action
                     if (isset($data['logo']['delete'])) {
                         $data['logo']           = null;
                         $data['delete_logo']    = true;
+                        if ($this->_file->isExists($data['logo']['value'])) {
+                            try {
+                                $this->_file->deleteFile($data['logo']['value']);
+                            } catch (Exception $e) {
+                                $this->messageManager->addError($e->getMessage());
+                            }
+                        }
                     } elseif (isset($data['logo']['value'])) {
                         $data['logo'] = $data['logo']['value'];
                     } else {
