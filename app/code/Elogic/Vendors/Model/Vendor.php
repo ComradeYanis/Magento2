@@ -14,7 +14,12 @@ class Vendor extends AbstractModel
     /**
      * @const VENDOR_ID
      */
-    const VENDOR_ID = 'entity_id';
+    public const VENDOR_ID = 'entity_id';
+
+    /**
+     * @const ENTITY
+     */
+    public const ENTITY = 'elogic_vendor';
 
     /**
      * @var string $_eventPrefix
