@@ -85,10 +85,10 @@ class AddVendorAttributeToProduct implements DataPatchInterface, PatchRevertable
             Product::ENTITY,
             'elogic_vendor',
             [
-                'type' => Table::TYPE_INTEGER,
+                'type' => Table::TYPE_TEXT,
                 'label' => 'Elogic Vendor',
                 'input' => 'multiselect',
-                'required' => false,
+                'required' => true,
                 'visible' => true,
                 'used_defined' => true,
                 'visible_on_front' => true,
