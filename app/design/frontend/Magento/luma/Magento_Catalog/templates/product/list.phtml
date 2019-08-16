@@ -1,0 +1,8 @@
+<?php
+$_getMyAttr = $_product->getResource()->getAttribute('elogic_vendor');
+echo 'sikal';
+// Get Value
+$attrTestValue = $_getMyAttr->getFrontend()->getValue($_product);
+
+// Get Label
+$attrTestLabel = $_getMyAttr->getStoreLabel();
