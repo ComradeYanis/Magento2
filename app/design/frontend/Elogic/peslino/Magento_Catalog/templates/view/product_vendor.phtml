@@ -1,0 +1,42 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+use Elogic\Vendors\Helper\FrontOutput;
+use Elogic\Vendors\Model\Vendor;
+
+/**
+ * Product view template
+ *
+ * @see \Magento\Catalog\Block\Product\View\Description
+ * @var $_vendor Vendor
+ *
+ */
+?>
+<?php
+/** @var FrontOutput $_helper */
+$_helper = $this->helper(FrontOutput::class);
+$_vendor = $block->getVendor();
+
+if (!$_vendor instanceof Vendor) {
+    return;
+}
+
+$_description   = $_vendor->getData('description');
+
+$_logo          = $_vendor->getLogoUrl();
+$_name          = $_vendor->getData('name');
+?>
+
+<div class="product attribute vendor-image">
+    <img src="<?= $_logo ?>"  alt="<?= $_name ?>">
+</div>
+<div class="product attribute vendor-name">
+    <div class="value"> <?= $_name ?></div>
+</div>
+<div class="product attribute vendor-description">
+    <div class="value"> <?= $_description ?></div>
+</div>
