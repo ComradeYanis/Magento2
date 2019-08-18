@@ -32,11 +32,9 @@ $_name          = $_vendor->getData('name');
 ?>
 
 <div class="product attribute vendor-image">
-    <img src="<?= $_logo ?>"  alt="<?= $_name ?>">
+    <img src="<?= $_logo ?>"  alt="<?= $_name ?>" class="hover-image">
 </div>
-<div class="product attribute vendor-name">
-    <div class="value"> <?= $_name ?></div>
-</div>
-<div class="product attribute vendor-description">
-    <div class="value"> <?= $_description ?></div>
+<div class="hover-text">
+    <h1> <?= $_name ?></h1>
+    <h6 class="value"> <?= $_description ?></h6>
 </div>

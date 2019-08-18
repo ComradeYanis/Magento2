@@ -9,6 +9,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <css src="mage/gallery/gallery.css"/>
+        <css src="source/_vendor_custom.less"/>
     </head>
     <update handle="catalog_product_opengraph"/>
     <update handle="page_calendar"/>
