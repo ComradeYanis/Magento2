@@ -1,14 +1,14 @@
 <?php
 
-namespace Elogic\Vendors\Api\Data;
+namespace Elogic\Vendors\Model;
 
 use Magento\Framework\ObjectManagerInterface;
 
 /**
- * Interface VendorSearchResultInterface
- * @package Elogic\Vendors\Api\Data
+ * Class VendorFactory
+ * @package Elogic\Vendors\Model
  */
-class VendorSearchResultInterfaceFactory
+class VendorFactory
 {
     /**
      * Object Manager instance
@@ -30,7 +30,7 @@ class VendorSearchResultInterfaceFactory
      * @param ObjectManagerInterface $objectManager
      * @param string $instanceName
      */
-    public function __construct(ObjectManagerInterface $objectManager, $instanceName = VendorSearchResultInterface::class)
+    public function __construct(ObjectManagerInterface $objectManager, $instanceName = Vendor::class)
     {
         $this->_objectManager = $objectManager;
         $this->_instanceName = $instanceName;
@@ -40,7 +40,7 @@ class VendorSearchResultInterfaceFactory
      * Create class instance with specified parameters
      *
      * @param array $data
-     * @return VendorSearchResultInterface
+     * @return Vendor
      */
     public function create(array $data = [])
     {

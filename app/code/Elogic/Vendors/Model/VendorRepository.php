@@ -9,7 +9,6 @@ use Elogic\Vendors\Api\VendorRepositoryInterface;
 use Elogic\Vendors\Model\ResourceModel\Vendor as VendorResource;
 use Elogic\Vendors\Model\ResourceModel\Vendor\Collection as VendorCollection;
 use Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory as VendorCollectionFactory;
-use Elogic\Vendors\Model\VendorFactory;
 use Exception;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -43,9 +42,9 @@ class VendorRepository implements VendorRepositoryInterface
     private $vendorCollectionFactory;
 
     /**
-     * @var VendorSearchResultFactory $vendorSearchResultFactory
+     * @var VendorSearchResultInterfaceFactory $vendorSearchResultInterfaceFactory
      */
-    private $vendorSearchResultFactory;
+    private $vendorSearchResultInterfaceFactory;
 
     /**
      * VendorRepository constructor.
@@ -60,10 +59,10 @@ class VendorRepository implements VendorRepositoryInterface
         VendorCollectionFactory $vendorCollectionFactory,
         VendorSearchResultInterfaceFactory $vendorSearchResultFactory
     ) {
-        $this->vendorResource               = $vendorResource;
-        $this->vendorFactory                = $vendorFactory;
-        $this->vendorCollectionFactory      = $vendorCollectionFactory;
-        $this->vendorSearchResultFactory    = $vendorSearchResultFactory;
+        $this->vendorResource                       = $vendorResource;
+        $this->vendorFactory                        = $vendorFactory;
+        $this->vendorCollectionFactory              = $vendorCollectionFactory;
+        $this->vendorSearchResultInterfaceFactory   = $vendorSearchResultFactory;
     }
 
     /**
@@ -102,7 +101,7 @@ class VendorRepository implements VendorRepositoryInterface
         }
 
         /** @var VendorSearchResultInterface $searchResult */
-        $searchResult = $this->vendorSearchResultFactory->create();
+        $searchResult = $this->vendorSearchResultInterfaceFactory->create();
         $searchResult->setSearchCriteria($searchCriteria);
         $searchResult->setItems($collection->getItems());
         $searchResult->setTotalCount($collection->getSize());
