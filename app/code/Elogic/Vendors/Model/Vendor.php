@@ -46,6 +46,7 @@ class Vendor extends AbstractModel implements VendorInterface
 
     /**
      * Vendor constructor.
+     * @param \Elogic\Vendors\Model\VendorFactory $vendorFactory
      * @param Context $context
      * @param Registry $registry
      * @param AbstractResource|null $resource

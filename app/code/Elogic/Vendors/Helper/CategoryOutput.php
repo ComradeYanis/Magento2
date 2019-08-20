@@ -3,6 +3,7 @@
 namespace Elogic\Vendors\Helper;
 
 use Elogic\Vendors\Model\Vendor;
+use Elogic\Vendors\Model\VendorRepository;
 use Magento\Catalog\Helper\Data;
 use Magento\Catalog\Model\Category as ModelCategory;
 use Magento\Catalog\Model\Product;
@@ -12,6 +13,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Escaper;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filter\Template;
 
 /**
@@ -59,9 +61,9 @@ class CategoryOutput extends AbstractHelper
     private $directivePatterns;
 
     /**
-     * @var Vendor $_vendor
+     * @var VendorRepository $_vendorRepositoty
      */
-    protected $_vendor;
+    protected $_vendorRepositoty;
 
     /**
      * Output constructor.
@@ -69,7 +71,7 @@ class CategoryOutput extends AbstractHelper
      * @param Config $eavConfig
      * @param Data $catalogData
      * @param Escaper $escaper
-     * @param Vendor $vendor
+     * @param VendorRepository $vendorRepositoty
      * @param array $directivePatterns
      */
     public function __construct(
@@ -77,14 +79,14 @@ class CategoryOutput extends AbstractHelper
     Config $eavConfig,
     Data $catalogData,
     Escaper $escaper,
-    Vendor $vendor,
+    VendorRepository $vendorRepositoty,
     $directivePatterns = []
 ) {
         $this->_eavConfig = $eavConfig;
         $this->_catalogData = $catalogData;
         $this->_escaper = $escaper;
         $this->directivePatterns = $directivePatterns;
-        $this->_vendor = $vendor;
+        $this->_vendorRepositoty = $vendorRepositoty;
         parent::__construct($context);
     }
 
@@ -199,14 +201,26 @@ class CategoryOutput extends AbstractHelper
     /**
      * @param $product
      * @return Vendor
+     * @throws NoSuchEntityException
      */
-    public function getVendor($product)
+    public function getVendor(Product $product)
     {
-        if ($product instanceof Product) {
-            $this->_vendor->load($product->getElogicVendor());
+        if ($product->getElogicVendor()) {
+            return $this->_vendorRepositoty->get(intval($product->getElogicVendor()));
         }
+    }
 
-        return $this->_vendor;
+    /**
+     * @param ModelProduct $product
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getVendorName(Product $product)
+    {
+        if ($vendor = $this->getVendor($product)) {
+            return $vendor->getName();
+        }
+        return 'No vendor';
     }
 
     /**
