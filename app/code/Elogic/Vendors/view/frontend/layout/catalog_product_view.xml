@@ -2,12 +2,12 @@
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <css src="Elogic_Vendors::module.css" />
+        <css src="Elogic_Vendors::module.css"/>
     </head>
     <body>
-        <referenceContainer name="product.info.price">
+        <referenceContainer name="product.info.main">
             <block class="Elogic\Vendors\Block\Frontend\Vendor\ProductVendor" name="product.info.vendor"
-                    template="Elogic_Vendors::view/product_vendor.phtml" after="product.info.stock.sku" />
+                   template="Elogic_Vendors::view/product_vendor.phtml" after="product.info.price"/>
         </referenceContainer>
     </body>
 </page>

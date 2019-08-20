@@ -26,9 +26,9 @@ if ($_vendor && $_vendor instanceof Vendor) :
 ?>
         <div class="product attribute vendor-image hover-image">
             <img src="<?= $_vendor->getLogoUrl() ?>"  alt="<?= $_name ?>" class="hover-image">
-        </div>
-        <div class="product attribute text hover-text">
-            <h1> <?= $_name ?></h1>
-            <h6 class="value"> <?= $_vendor->getData('description') ?></h6>
+            <div class="image-text hover-text">
+                <h1> <?= $_name ?></h1>
+                <h6 class="value"> <?= $_vendor->getData('description') ?></h6>
+            </div>
         </div>
 <?php endif; ?>
