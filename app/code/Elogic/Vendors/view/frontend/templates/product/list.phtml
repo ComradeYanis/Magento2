@@ -83,7 +83,9 @@ $_helper = $this->helper(CategoryOutput::class);
                                     $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                                 </a>
                             </strong>
-                            <h4><?= $_helper->getVendorName($_product) ?></h4>
+                            <?php foreach ($_helper->getVendors($_product) as $vendor) : ?>
+                                <h4><?= $vendor->getName() ?></h4>
+                            <?php endforeach; ?>
                             <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
                             <?= /* @escapeNotVerified */
                             $block->getProductPrice($_product) ?>

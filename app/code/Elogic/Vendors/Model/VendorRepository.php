@@ -6,7 +6,7 @@ use Elogic\Vendors\Api\Data\VendorInterface;
 use Elogic\Vendors\Api\Data\VendorSearchResultInterface;
 use Elogic\Vendors\Api\VendorRepositoryInterface;
 use Elogic\Vendors\Model\ResourceModel\Vendor as VendorResource;
-use Elogic\Vendors\Model\ResourceModel\Vendor\Collection as VendorCollection;
+use Elogic\Vendors\Model\ResourceModel\Vendor\Collection;
 use Exception;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -26,7 +26,7 @@ class VendorRepository implements VendorRepositoryInterface
     private $registry = [];
 
     /**
-     * @var VendorResource $vendorResource
+     * @var Collection $vendorResource
      */
     private $vendorResource;
 
@@ -47,13 +47,13 @@ class VendorRepository implements VendorRepositoryInterface
 
     /**
      * VendorRepository constructor.
-     * @param VendorResource $vendorResource
+     * @param Collection $vendorResource
      * @param VendorFactory $vendorFactory
-     * @param Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory $vendorCollectionFactory
+     * @param VendorResource\CollectionFactory $vendorCollectionFactory
      * @param Elogic\Vendors\Api\Data\VendorSearchResultInterfaceFactory $vendorSearchResultFactory
      */
     public function __construct(
-        VendorResource $vendorResource,
+        Collection $vendorResource,
         VendorFactory $vendorFactory,
         Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory $vendorCollectionFactory,
         Elogic\Vendors\Api\Data\VendorSearchResultInterfaceFactory $vendorSearchResultFactory
@@ -90,7 +90,7 @@ class VendorRepository implements VendorRepositoryInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria)
     {
-        /** @var VendorCollection $collection */
+        /** @var Collection $collection */
         $collection = $this->vendorCollectionFactory->create();
         foreach ($searchCriteria->getFilterGroups() as $filterGroup) {
             foreach ($filterGroup->getFilters() as $filter) {

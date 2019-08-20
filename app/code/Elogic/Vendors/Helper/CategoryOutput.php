@@ -2,18 +2,20 @@
 
 namespace Elogic\Vendors\Helper;
 
-use Elogic\Vendors\Model\Vendor;
+use Elogic\Vendors\Api\Data\VendorInterface;
+use Elogic\Vendors\Api\Data\VendorSearchResultInterface;
 use Elogic\Vendors\Model\VendorRepository;
 use Magento\Catalog\Helper\Data;
 use Magento\Catalog\Model\Category as ModelCategory;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product as ModelProduct;
 use Magento\Eav\Model\Config;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Escaper;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filter\Template;
 
 /**
@@ -199,28 +201,22 @@ class CategoryOutput extends AbstractHelper
     }
 
     /**
-     * @param $product
-     * @return Vendor
-     * @throws NoSuchEntityException
-     */
-    public function getVendor(Product $product)
-    {
-        if ($product->getElogicVendor()) {
-            return $this->_vendorRepositoty->get(intval($product->getElogicVendor()));
-        }
-    }
-
-    /**
      * @param ModelProduct $product
-     * @return string
-     * @throws NoSuchEntityException
+     * @return VendorSearchResultInterface
      */
-    public function getVendorName(Product $product)
+    public function getVendors(Product $product)
     {
-        if ($vendor = $this->getVendor($product)) {
-            return $vendor->getName();
-        }
-        return 'No vendor';
+        $elogic_vendor_id = $product->getElogicVendor();
+
+        /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
+        $searchCriteriaBuilder = ObjectManager::getInstance()->create(SearchCriteriaBuilder::class);
+        $searchCriteria = $searchCriteriaBuilder->addFilter(
+            VendorInterface::ENTITY_ID,
+            $elogic_vendor_id,
+            'eq'
+        )->create();
+
+        return $this->_vendorRepositoty->getList($searchCriteria);
     }
 
     /**
