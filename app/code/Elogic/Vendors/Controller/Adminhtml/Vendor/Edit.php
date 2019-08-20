@@ -2,12 +2,14 @@
 
 namespace Elogic\Vendors\Controller\Adminhtml\Vendor;
 
+use Elogic\Vendors\Model\Vendor;
+use Elogic\Vendors\Model\VendorRepository;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Page;
 use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
-use Elogic\Vendors\Model\Vendor;
 
 /**
  * Class Edit
@@ -28,25 +30,25 @@ class Edit extends Action
     protected $_resultPageFactory;
 
     /**
-     * @var Vendor $_model
+     * @var Vendor $_modelRepository
      */
-    protected $_model;
+    protected $_modelRepository;
 
     /**
      * @param Action\Context $context
      * @param PageFactory $resultPageFactory
      * @param Registry $registry
-     * @param Vendor $model
+     * @param VendorRepository $modelRepository
      */
     public function __construct(
         Action\Context $context,
         PageFactory $resultPageFactory,
         Registry $registry,
-        Vendor $model
+        VendorRepository $modelRepository
     ) {
-        $this->_resultPageFactory = $resultPageFactory;
-        $this->_coreRegistry = $registry;
-        $this->_model = $model;
+        $this->_resultPageFactory   = $resultPageFactory;
+        $this->_coreRegistry        = $registry;
+        $this->_modelRepository     = $modelRepository;
         parent::__construct($context);
     }
 
@@ -79,16 +81,17 @@ class Edit extends Action
      *
      * @return Page|Redirect|\Magento\Framework\Controller\Result\Redirect
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('id');
-        $model = $this->_model;
+        $id = (int)$this->getRequest()->getParam('id');
+        $model = $this->_modelRepository;
 
         // If you have got an id, it's edition
         if ($id) {
-            $model->load($id);
-            if (!$model->getId()) {
+            $model = $this->_modelRepository->get($id);
+            if (!$model) {
                 $this->messageManager->addError(__('This vendor not exists.'));
                 /** \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
                 $resultRedirect = $this->resultRedirectFactory->create();

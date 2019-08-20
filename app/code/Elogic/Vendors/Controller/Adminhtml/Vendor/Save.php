@@ -3,14 +3,16 @@
 namespace Elogic\Vendors\Controller\Adminhtml\Vendor;
 
 use Elogic\Vendors\Model\Vendor;
+use Elogic\Vendors\Model\VendorRepository;
 use Exception;
-use File;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Image\AdapterFactory;
 use Magento\MediaStorage\Model\File\UploaderFactory;
@@ -23,9 +25,9 @@ use RuntimeException;
 class Save extends Action
 {
     /**
-     * @var Vendor $_model
+     * @var VendorRepository $_modelRepository
      */
-    protected $_model;
+    protected $_modelRepository;
 
     /**
      * @var UploaderFactory $_uploader
@@ -49,7 +51,7 @@ class Save extends Action
 
     /**
      * @param Action\Context $context
-     * @param Vendor $model
+     * @param VendorRepository $modelRepository
      * @param UploaderFactory $uploader
      * @param AdapterFactory $adapterFactory
      * @param Filesystem $filesystem
@@ -57,7 +59,7 @@ class Save extends Action
      */
     public function __construct(
         Action\Context $context,
-        Vendor $model,
+        VendorRepository $modelRepository,
         UploaderFactory $uploader,
         AdapterFactory $adapterFactory,
         Filesystem $filesystem,
@@ -66,7 +68,7 @@ class Save extends Action
         $this->_uploader        = $uploader;
         $this->_adapterFactory  = $adapterFactory;
         $this->_fileSystem      = $filesystem;
-        $this->_model           = $model;
+        $this->_modelRepository = $modelRepository;
         $this->_file            = $file;
         parent::__construct($context);
     }
@@ -84,19 +86,20 @@ class Save extends Action
      *
      * @return ResultInterface
      * @throws FileSystemException
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
-        $data = $this->getRequest()->getPostValue();
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
+        $data = $this->getRequest()->getPostValue();
         if ($data) {
-            /** @var Vendor $model */
-            $model = $this->_model;
+            /** @var VendorRepository $model */
+            $model = $this->_modelRepository;
 
             $id = $this->getRequest()->getParam('id');
             if ($id) {
-                $model->load($id);
+                $model->get($id);
             }
 
             $file = $this->_request->getFiles('logo');
@@ -138,19 +141,17 @@ class Save extends Action
                 }
             }
 
-            $model->setData($data);
-
             $this->_eventManager->dispatch(
                 'vendors_vendor_prepare_save',
                 ['vendor' => $model, 'request' => $this->getRequest()]
             );
 
             try {
-                $model->save();
+                $model->save($data);
                 $this->messageManager->addSuccess(__('Vendor saved'));
                 $this->_getSession()->setFormData(false);
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['id' => $model->getId(), '_current' => true]);
+                    return $resultRedirect->setPath('*/*/edit', ['id' => $model->getEntityId(), '_current' => true]);
                 }
                 return $resultRedirect->setPath('*/*/');
             } catch (LocalizedException $e) {

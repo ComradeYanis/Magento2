@@ -4,7 +4,6 @@ namespace Elogic\Vendors\Model;
 
 use Elogic\Vendors\Api\Data\VendorInterface;
 use Elogic\Vendors\Model\ResourceModel\Vendor as VendorResource;
-use Elogic\Vendors\Model\VendorFactory;
 use Magento\Catalog\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -22,20 +21,9 @@ class Vendor extends AbstractModel implements VendorInterface
 {
 
     /**
-     * Elogic_Vendor table name
-     * @const TABLE_NAME
-     */
-    const TABLE_NAME = 'elogic_vendor';
-
-    /**
      * @var string $_idFieldName
      */
     protected $_idFieldName = VendorInterface::ENTITY_ID;
-
-    /**
-     * @var VendorFactory $vendorFactory
-     */
-    private $vendorFactory;
 
     /**
      * @var StoreManagerInterface $_storeManager
@@ -54,7 +42,6 @@ class Vendor extends AbstractModel implements VendorInterface
 
     /**
      * Vendor constructor.
-     * @param \Elogic\Vendors\Model\VendorFactory $vendorFactory
      * @param Context $context
      * @param Registry $registry
      * @param StoreManagerInterface $storeManager
@@ -63,15 +50,13 @@ class Vendor extends AbstractModel implements VendorInterface
      * @param array $data
      */
     public function __construct(
-        VendorFactory $vendorFactory,
+        StoreManagerInterface $storeManager,
         Context $context,
         Registry $registry,
-        StoreManagerInterface $storeManager,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
     ) {
-        $this->vendorFactory = $vendorFactory;
         $this->_storeManager = $storeManager;
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
     }

@@ -2,7 +2,9 @@
 
 namespace Elogic\Vendors\Setup\Patch\Data;
 
+use Elogic\Vendors\Model\Source\Vendor;
 use Magento\Catalog\Model\Product;
+use Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\DB\Ddl\Table;
@@ -74,8 +76,6 @@ class AddVendorAttributeToProduct implements DataPatchInterface, PatchRevertable
      * If we speak about data, under revert means: $transaction->rollback()
      *
      * @return void
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Zend_Validate_Exception
      */
     public function apply()
     {
@@ -95,8 +95,8 @@ class AddVendorAttributeToProduct implements DataPatchInterface, PatchRevertable
                 'sort_order' => 1000,
                 'position' => 1000,
                 'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
-                'source' => 'Elogic\Vendors\Model\Source\Vendor',
-                'backend' => 'Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend',
+                'source' => Vendor::class,
+                'backend' => ArrayBackend::class,
                 'system' => 0,
                 'unique' => false,
             ]

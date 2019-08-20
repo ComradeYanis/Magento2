@@ -2,7 +2,7 @@
 
 namespace Elogic\Vendors\Setup;
 
-use Elogic\Vendors\Model\Vendor;
+use Elogic\Vendors\Model\ResourceModel\Vendor;
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
@@ -24,13 +24,13 @@ class InstallSchema implements InstallSchemaInterface
     {
         $installer = $setup;
 
-        if (!$setup->tableExists(Vendor::ENTITY)) {
+        if (!$setup->tableExists(Vendor::TABLE_NAME)) {
             $installer->startSetup();
 
             /**
              * Create table 'elogic_vendor'
              */
-            $tableName = $installer->getTable('elogic_vendor');
+            $tableName = $installer->getTable(Vendor::TABLE_NAME);
 
             $tableComment = 'Store vendors';
             $columns = [

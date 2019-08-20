@@ -3,11 +3,15 @@
 namespace Elogic\Vendors\Controller\Adminhtml\Vendor;
 
 use Elogic\Vendors\Model\Vendor;
+use Elogic\Vendors\Model\VendorRepository;
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem\Driver\File;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Delete
@@ -17,9 +21,9 @@ class Delete extends Action
 {
 
     /**
-     * @var Vendor $_model
+     * @var Vendor $_modelRepository
      */
-    protected $_model;
+    protected $_modelRepository;
 
     /**
      * @var File $_file
@@ -27,18 +31,26 @@ class Delete extends Action
     protected $_file;
 
     /**
+     * @var LoggerInterface $_logger
+     */
+    protected $_logger;
+
+    /**
      * @param Action\Context $context
-     * @param Vendor $model
+     * @param VendorRepository $modelRepository
      * @param File $file
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Action\Context $context,
-        Vendor $model,
-        File $file
+        VendorRepository $modelRepository,
+        File $file,
+        LoggerInterface $logger
     ) {
         parent::__construct($context);
-        $this->_model   = $model;
-        $this->_file    = $file;
+        $this->_modelRepository = $modelRepository;
+        $this->_file            = $file;
+        $this->_logger          = $logger;
     }
 
     /**
@@ -53,28 +65,31 @@ class Delete extends Action
      * Delete action
      *
      * @return ResultInterface
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('id');
+        $id = (int)$this->getRequest()->getParam('id');
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($id) {
+            $model = $this->_modelRepository->get($id);
             try {
-                $model = $this->_model;
-                $model->load($id);
-                $logo = $model->getLogo();
-                if (isset($logo) && strlen($logo)) {
-                    try {
-                        $this->_file->deleteFile($logo);
-                    } catch (Exception $e) {
-                        $this->messageManager->addError($e->getMessage());
-                    }
-                }
-                $model->delete();
+                $this->_modelRepository->delete($model);
+
                 $this->messageManager->addSuccess(__('Vendor deleted'));
                 return $resultRedirect->setPath('*/*/');
+            } catch (LocalizedException $e) {
+                $this->_logger->error($e->getLogMessage());
+                $this->messageManager->addErrorMessage(
+                    __(
+                        'The vendor #%1  haven\'t been deleted. Please see server logs for more details.',
+                            $model->getEntityId()
+                        )
+                );
+                return $resultRedirect->setPath('*/*/edit', ['id' => $id]);
             } catch (Exception $e) {
+
                 $this->messageManager->addError($e->getMessage());
                 return $resultRedirect->setPath('*/*/edit', ['id' => $id]);
             }

@@ -4,15 +4,14 @@ namespace Elogic\Vendors\Model;
 
 use Elogic\Vendors\Api\Data\VendorInterface;
 use Elogic\Vendors\Api\Data\VendorSearchResultInterface;
-use Elogic\Vendors\Api\Data\VendorSearchResultInterfaceFactory;
 use Elogic\Vendors\Api\VendorRepositoryInterface;
 use Elogic\Vendors\Model\ResourceModel\Vendor as VendorResource;
 use Elogic\Vendors\Model\ResourceModel\Vendor\Collection as VendorCollection;
-use Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory as VendorCollectionFactory;
 use Exception;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
+use Magento\Framework\Filesystem\Driver\File;
 
 /**
  * Class VendorRepository
@@ -37,12 +36,12 @@ class VendorRepository implements VendorRepositoryInterface
     private $vendorFactory;
 
     /**
-     * @var VendorCollectionFactory $vendorCollectionFactory
+     * @var Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory $vendorCollectionFactory
      */
     private $vendorCollectionFactory;
 
     /**
-     * @var VendorSearchResultInterfaceFactory $vendorSearchResultInterfaceFactory
+     * @var Elogic\Vendors\Api\Data\VendorSearchResultInterfaceFactory $vendorSearchResultInterfaceFactory
      */
     private $vendorSearchResultInterfaceFactory;
 
@@ -50,14 +49,14 @@ class VendorRepository implements VendorRepositoryInterface
      * VendorRepository constructor.
      * @param VendorResource $vendorResource
      * @param VendorFactory $vendorFactory
-     * @param VendorCollectionFactory $vendorCollectionFactory
-     * @param VendorSearchResultInterfaceFactory $vendorSearchResultFactory
+     * @param Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory $vendorCollectionFactory
+     * @param Elogic\Vendors\Api\Data\VendorSearchResultInterfaceFactory $vendorSearchResultFactory
      */
     public function __construct(
         VendorResource $vendorResource,
         VendorFactory $vendorFactory,
-        VendorCollectionFactory $vendorCollectionFactory,
-        VendorSearchResultInterfaceFactory $vendorSearchResultFactory
+        Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory $vendorCollectionFactory,
+        Elogic\Vendors\Api\Data\VendorSearchResultInterfaceFactory $vendorSearchResultFactory
     ) {
         $this->vendorResource                       = $vendorResource;
         $this->vendorFactory                        = $vendorFactory;
@@ -134,6 +133,15 @@ class VendorRepository implements VendorRepositoryInterface
     {
         try {
             /** @var Vendor $vendor */
+            $logo = $vendor->getLogo();
+            if (isset($logo) && strlen($logo)) {
+                try {
+                    $file = new File();
+                    $file->deleteFile($logo);
+                } catch (Exception $e) {
+                    throw new StateException(__('Unable to remove image for vendor #%1', $vendor->getId()));
+                }
+            }
             $this->vendorResource->delete($vendor);
             unset($this->registry[$vendor->getId()]);
         } catch (Exception $e) {
