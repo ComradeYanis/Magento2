@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-/**
- * Copyright © 2015 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <!-- Integration -->
@@ -176,19 +170,6 @@
                 </item>
             </argument>
         </column>
-        <!-- Department Column -->
-        <!--        <column name="department_id">-->
-        <!--            <argument name="data" xsi:type="array">-->
-        <!--                <item name="options" xsi:type="object">Maxime\Jobs\Model\Source\Department</item>-->
-        <!--                <item name="config" xsi:type="array">-->
-        <!--                    <item name="filter" xsi:type="string">select</item>-->
-        <!--                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>-->
-        <!--                    <item name="editor" xsi:type="string">select</item>-->
-        <!--                    <item name="dataType" xsi:type="string">select</item>-->
-        <!--                    <item name="label" xsi:type="string" translate="true">Department</item>-->
-        <!--                </item>-->
-        <!--            </argument>-->
-        <!--        </column>-->
 
         <!-- Action columns -->
         <actionsColumn name="actions" class="Elogic\Vendors\Ui\Component\Listing\Column\VendorActions">

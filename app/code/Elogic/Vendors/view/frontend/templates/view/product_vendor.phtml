@@ -4,8 +4,6 @@
  * See COPYING.txt for license details.
  */
 
-// @codingStandardsIgnoreFile
-use Elogic\Vendors\Helper\FrontOutput;
 use Elogic\Vendors\Model\Vendor;
 
 /**
@@ -17,12 +15,10 @@ use Elogic\Vendors\Model\Vendor;
  */
 ?>
 <?php
-/** @var FrontOutput $_helper */
-$_helper = $this->helper(FrontOutput::class);
 $_vendor = $block->getVendor();
 
 if ($_vendor && $_vendor instanceof Vendor) :
-    $_name          = $_vendor->getData('name');
+    $_name = $_vendor->getData('name');
 ?>
         <div class="product attribute vendor-image hover-image">
             <img src="<?= $_vendor->getLogoUrl() ?>"  alt="<?= $_name ?>" class="hover-image">
