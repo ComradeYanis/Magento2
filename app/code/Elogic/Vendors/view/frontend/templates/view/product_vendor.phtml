@@ -24,7 +24,7 @@ $_vendor = $block->getVendor();
 if ($_vendor && $_vendor instanceof Vendor) :
     $_name          = $_vendor->getData('name');
 ?>
-        <div class="product attribute vendor-image">
+        <div class="product attribute vendor-image hover-image">
             <img src="<?= $_vendor->getLogoUrl() ?>"  alt="<?= $_name ?>" class="hover-image">
         </div>
         <div class="product attribute text hover-text">
