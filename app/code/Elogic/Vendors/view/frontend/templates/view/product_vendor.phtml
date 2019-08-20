@@ -21,20 +21,14 @@ use Elogic\Vendors\Model\Vendor;
 $_helper = $this->helper(FrontOutput::class);
 $_vendor = $block->getVendor();
 
-if (!$_vendor instanceof Vendor) {
-    return;
-}
-
-$_description   = $_vendor->getData('description');
-
-$_logo          = $_vendor->getLogoUrl();
-$_name          = $_vendor->getData('name');
+if ($_vendor && $_vendor instanceof Vendor) :
+    $_name          = $_vendor->getData('name');
 ?>
-
-<div class="product attribute vendor-image">
-    <img src="<?= $_logo ?>"  alt="<?= $_name ?>" class="hover-image">
-</div>
-<div class="hover-text">
-    <h1> <?= $_name ?></h1>
-    <h6 class="value"> <?= $_description ?></h6>
-</div>
+        <div class="product attribute vendor-image">
+            <img src="<?= $_vendor->getLogoUrl() ?>"  alt="<?= $_name ?>" class="hover-image">
+        </div>
+        <div class="product attribute text hover-text">
+            <h1> <?= $_name ?></h1>
+            <h6 class="value"> <?= $_vendor->getData('description') ?></h6>
+        </div>
+<?php endif; ?>

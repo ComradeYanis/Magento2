@@ -7,9 +7,12 @@ use Elogic\Vendors\Model\ResourceModel\Vendor as VendorResource;
 use Elogic\Vendors\Model\VendorFactory;
 use Magento\Catalog\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
+use Magento\Framework\UrlInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Vendor
@@ -35,6 +38,11 @@ class Vendor extends AbstractModel implements VendorInterface
     private $vendorFactory;
 
     /**
+     * @var StoreManagerInterface $_storeManager
+     */
+    private $_storeManager;
+
+    /**
      * Initialize resource model
      *
      * @return void
@@ -49,6 +57,7 @@ class Vendor extends AbstractModel implements VendorInterface
      * @param \Elogic\Vendors\Model\VendorFactory $vendorFactory
      * @param Context $context
      * @param Registry $registry
+     * @param StoreManagerInterface $storeManager
      * @param AbstractResource|null $resource
      * @param AbstractDb|null $resourceCollection
      * @param array $data
@@ -57,21 +66,23 @@ class Vendor extends AbstractModel implements VendorInterface
         VendorFactory $vendorFactory,
         Context $context,
         Registry $registry,
+        StoreManagerInterface $storeManager,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->vendorFactory = $vendorFactory;
+        $this->_storeManager = $storeManager;
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
     }
 
     /**
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getLogoUrl()
     {
-//        return $this->_store_manager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $this->getLogo();
-        return '';
+        return $this->_storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $this->getLogo();
     }
 
     /**
