@@ -4,9 +4,11 @@ namespace Elogic\Vendors\Model;
 
 use Elogic\Vendors\Api\Data\VendorInterface;
 use Elogic\Vendors\Api\Data\VendorSearchResultInterface;
+use Elogic\Vendors\Api\Data\VendorSearchResultInterfaceFactory;
 use Elogic\Vendors\Api\VendorRepositoryInterface;
 use Elogic\Vendors\Model\ResourceModel\Vendor as VendorResource;
 use Elogic\Vendors\Model\ResourceModel\Vendor\Collection;
+use Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory;
 use Exception;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -49,14 +51,14 @@ class VendorRepository implements VendorRepositoryInterface
      * VendorRepository constructor.
      * @param Collection $vendorResource
      * @param VendorFactory $vendorFactory
-     * @param VendorResource\CollectionFactory $vendorCollectionFactory
+     * @param CollectionFactory $vendorCollectionFactory
      * @param Elogic\Vendors\Api\Data\VendorSearchResultInterfaceFactory $vendorSearchResultFactory
      */
     public function __construct(
         Collection $vendorResource,
         VendorFactory $vendorFactory,
-        Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory $vendorCollectionFactory,
-        Elogic\Vendors\Api\Data\VendorSearchResultInterfaceFactory $vendorSearchResultFactory
+        CollectionFactory $vendorCollectionFactory,
+        VendorSearchResultInterfaceFactory $vendorSearchResultFactory
     ) {
         $this->vendorResource                       = $vendorResource;
         $this->vendorFactory                        = $vendorFactory;

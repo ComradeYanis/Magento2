@@ -212,8 +212,7 @@ class CategoryOutput extends AbstractHelper
         $searchCriteriaBuilder = ObjectManager::getInstance()->create(SearchCriteriaBuilder::class);
         $searchCriteria = $searchCriteriaBuilder->addFilter(
             VendorInterface::ENTITY_ID,
-            $elogic_vendor_id,
-            'eq'
+            $elogic_vendor_id
         )->create();
 
         return $this->_vendorRepositoty->getList($searchCriteria);
