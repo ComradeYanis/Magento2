@@ -115,7 +115,7 @@ class Edit extends Action
         );
         $resultPage->getConfig()->getTitle()->prepend(__('Vendors'));
         $resultPage->getConfig()->getTitle()
-            ->prepend($model->items ? $model->getName() : __('New Vendor'));
+            ->prepend($model->getEntityId() ? $model->getName() : __('New Vendor'));
 
         return $resultPage;
     }
