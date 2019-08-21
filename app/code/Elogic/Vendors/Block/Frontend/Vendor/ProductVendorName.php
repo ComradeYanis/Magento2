@@ -3,7 +3,6 @@
 namespace Elogic\Vendors\Block\Frontend\Vendor;
 
 use Elogic\Vendors\Api\Data\VendorInterface;
-use Elogic\Vendors\Api\Data\VendorSearchResultInterface;
 use Elogic\Vendors\Model\VendorRepository;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -41,7 +40,7 @@ class ProductVendorName implements ArgumentInterface
 
     /**
      * @param Product $product
-     * @return VendorSearchResultInterface
+     * @return VendorInterface[]
      */
     public function getVendorsNames(Product $product)
     {
@@ -52,6 +51,13 @@ class ProductVendorName implements ArgumentInterface
             $elogicVendorId
         )->create();
 
-        return $this->_vendorRepository->getList($searchCriteria);
+        $searchList = $this->_vendorRepository->getList($searchCriteria);
+        if ($searchList->getTotalCount()) {
+            $searchItems = $searchList->getItems();
+        } else {
+            $searchItems = null;
+        }
+
+        return $searchItems;
     }
 }
