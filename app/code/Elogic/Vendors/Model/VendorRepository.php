@@ -77,7 +77,7 @@ class VendorRepository implements VendorRepositoryInterface
             /** @var Vendor $vendor */
             $vendor = $this->vendorFactory->create();
             $this->vendorResource->load($vendor, $id);
-            if (!$vendor->getId()) {
+            if (!$vendor->getEntityId()) {
                 throw new NoSuchEntityException(__('Requested vendor does not exist'));
             }
             $this->registry[$id] = $vendor;
@@ -119,11 +119,11 @@ class VendorRepository implements VendorRepositoryInterface
         try {
             /** @var Vendor $vendor */
             $this->vendorResource->save($vendor);
-            $this->registry[$vendor->getId()] = $this->get($vendor->getId());
+            $this->registry[$vendor->getEntityId()] = $this->get($vendor->getEntityId());
         } catch (Exception $exception) {
-            throw new StateException(__('Unable to save vendor #%1', $vendor->getId()));
+            throw new StateException(__('Unable to save vendor #%1', $vendor->getEntityId()));
         }
-        return $this->registry[$vendor->getId()];
+        return $this->registry[$vendor->getEntityId()];
     }
 
     /**
@@ -141,13 +141,13 @@ class VendorRepository implements VendorRepositoryInterface
                     $file = new File();
                     $file->deleteFile($logo);
                 } catch (Exception $e) {
-                    throw new StateException(__('Unable to remove image for vendor #%1', $vendor->getId()));
+                    throw new StateException(__('Unable to remove image for vendor #%1', $vendor->getEntityId()));
                 }
             }
             $this->vendorResource->delete($vendor);
-            unset($this->registry[$vendor->getId()]);
+            unset($this->registry[$vendor->getEntityId()]);
         } catch (Exception $e) {
-            throw new StateException(__('Unable to remove vendor #%1', $vendor->getId()));
+            throw new StateException(__('Unable to remove vendor #%1', $vendor->getEntityId()));
         }
 
         return true;

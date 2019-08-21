@@ -65,7 +65,6 @@ class Delete extends Action
      * Delete action
      *
      * @return ResultInterface
-     * @throws NoSuchEntityException
      */
     public function execute()
     {
@@ -73,9 +72,8 @@ class Delete extends Action
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($id) {
-            $model = $this->_modelRepository->get($id);
             try {
-                $this->_modelRepository->delete($model);
+                $this->_modelRepository->deleteById($id);
 
                 $this->messageManager->addSuccess(__('Vendor deleted'));
                 return $resultRedirect->setPath('*/*/');
@@ -84,7 +82,7 @@ class Delete extends Action
                 $this->messageManager->addErrorMessage(
                     __(
                         'The vendor #%1  haven\'t been deleted. Please see server logs for more details.',
-                            $model->getEntityId()
+                            $id
                         )
                 );
                 return $resultRedirect->setPath('*/*/edit', ['id' => $id]);

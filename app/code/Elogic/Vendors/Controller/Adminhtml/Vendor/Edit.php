@@ -30,7 +30,7 @@ class Edit extends Action
     protected $_resultPageFactory;
 
     /**
-     * @var Vendor $_modelRepository
+     * @var VendorRepository $_modelRepository
      */
     protected $_modelRepository;
 
@@ -115,7 +115,7 @@ class Edit extends Action
         );
         $resultPage->getConfig()->getTitle()->prepend(__('Vendors'));
         $resultPage->getConfig()->getTitle()
-            ->prepend($model->getId() ? $model->getName() : __('New Vendor'));
+            ->prepend($model->items ? $model->getName() : __('New Vendor'));
 
         return $resultPage;
     }
