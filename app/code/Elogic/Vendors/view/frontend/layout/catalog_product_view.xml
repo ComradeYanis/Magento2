@@ -3,8 +3,13 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="product.info.main">
-            <block class="Elogic\Vendors\Block\Frontend\Vendor\ProductVendor" name="product.info.vendor"
-                   template="Elogic_Vendors::view/product_vendor.phtml" after="product.info.price"/>
+            <block class="Magento\Framework\View\Element\Template" name="product.elogic.viewmodel"
+                   template="Elogic_Vendors::view/product_category.phtml" after="product.info.price">
+                <arguments>
+                    <argument name="viewModel" xsi:type="object">Elogic\Vendors\Block\Frontend\Vendor\ProductVendor
+                    </argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

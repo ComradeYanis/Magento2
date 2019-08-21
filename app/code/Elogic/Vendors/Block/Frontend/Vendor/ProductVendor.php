@@ -7,16 +7,15 @@ use Elogic\Vendors\Api\Data\VendorSearchResultInterface;
 use Elogic\Vendors\Model\VendorRepository;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Registry;
-use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class ProductVendor
  * @package Elogic\Vendors\Block\Frontend\Vendor
  */
-class ProductVendor extends Template
+class ProductVendor implements ArgumentInterface
 {
 
     /**
@@ -40,24 +39,24 @@ class ProductVendor extends Template
     protected $_searchResult;
 
     /**
+     * @var SearchCriteriaBuilder $_searchCriteriaBuilder
+     */
+    protected $_searchCriteriaBuilder;
+
+    /**
      * ProductVendor constructor.
-     * @param Context $context
      * @param Registry $registry
      * @param VendorRepository $vendorRepository
-     * @param VendorSearchResultInterface $vendorSearchResult
-     * @param array $data
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      */
     public function __construct(
-        Context $context,
         Registry $registry,
         VendorRepository $vendorRepository,
-        VendorSearchResultInterface $vendorSearchResult,
-        array $data = []
+        SearchCriteriaBuilder $searchCriteriaBuilder
     ) {
-        $this->_coreRegistry = $registry;
-        $this->_vendorRepository = $vendorRepository;
-        $this->_searchResult = $vendorSearchResult;
-        parent::__construct($context, $data);
+        $this->_coreRegistry            = $registry;
+        $this->_vendorRepository        = $vendorRepository;
+        $this->_searchCriteriaBuilder   = $searchCriteriaBuilder;
     }
 
     /**
@@ -73,20 +72,25 @@ class ProductVendor extends Template
     }
 
     /**
+     * @param Product $product
+     */
+    public function setProduct(Product $product)
+    {
+        $this->_product = $product;
+    }
+
+    /**
      * @return VendorSearchResultInterface
      */
     public function getVendors()
     {
         $this->_product ?: $this->getProduct();
 
-        $elogic_vendor_id = $this->_product->getElogicVendor();
+        $elogicVendorId = $this->_product->getElogicVendor();
 
-        /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
-        $searchCriteriaBuilder = ObjectManager::getInstance()->create(SearchCriteriaBuilder::class);
-        $searchCriteria = $searchCriteriaBuilder->addFilter(
+        $searchCriteria = $this->_searchCriteriaBuilder->addFilter(
             VendorInterface::ENTITY_ID,
-            $elogic_vendor_id,
-            'eq'
+            $elogicVendorId
         )->create();
 
         return $this->_vendorRepository->getList($searchCriteria);

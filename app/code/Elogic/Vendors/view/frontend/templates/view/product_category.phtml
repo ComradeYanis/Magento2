@@ -1,0 +1,34 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Elogic\Vendors\Block\Frontend\Vendor\ProductVendor;
+use Magento\Framework\View\Element\Template;
+
+/**
+ * Product view template
+ *
+ * @see \Magento\Catalog\Block\Product\View\Description
+ * @var Template $block
+ * @var ProductVendor $viewModel
+ */
+$viewModel = $block->getData('viewModel');
+?>
+<?php
+$vendorsSearch = $viewModel->getVendors();
+if ($vendorsSearch->getTotalCount() > 0) :
+    $vendors = $vendorsSearch->getItems();
+    foreach ($vendors as $vendor) :
+        $_name = $vendor->getName();
+?>
+        <div class="product attribute vendor-image hover-image">
+            <img src="<?= $vendor->getLogoUrl() ?>" alt="<?= $_name ?>" class="hover-image">
+            <div class="image-text hover-text">
+                <h1> <?= $_name ?></h1>
+                <h6 class="value"> <?= $vendor->getDescription() ?></h6>
+            </div>
+        </div>
+<?php endforeach;
+endif; ?>

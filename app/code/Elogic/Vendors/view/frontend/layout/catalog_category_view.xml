@@ -2,7 +2,12 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="category.products.list" template="Elogic_Vendors::product/list.phtml"
-                        class="Magento\Catalog\Block\Product\ListProduct"/>
+        <referenceBlock name="category.products.list"
+                        template="Elogic_Vendors::view/product_list.phtml">
+            <arguments>
+                <argument name="viewModel" xsi:type="object">Elogic\Vendors\Block\Frontend\Vendor\ProductVendor
+                </argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>
