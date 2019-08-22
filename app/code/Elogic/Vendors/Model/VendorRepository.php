@@ -11,7 +11,6 @@ use Elogic\Vendors\Model\ResourceModel\Vendor\Collection;
 use Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory;
 use Exception;
 use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem;
