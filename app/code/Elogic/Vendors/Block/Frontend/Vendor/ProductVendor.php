@@ -85,11 +85,9 @@ class ProductVendor implements ArgumentInterface
     {
         $this->_product ?: $this->getProduct();
 
-        $elogicVendorIds = explode(',', $this->_product->getElogicVendor());
-
         $searchCriteria = $this->_searchCriteriaBuilder->addFilter(
             VendorInterface::ENTITY_ID,
-            $elogicVendorIds,
+            $this->_product->getElogicVendor(),
             'in'
         )->create();
 
