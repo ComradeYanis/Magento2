@@ -1,0 +1,13 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="catalog_product_entity_datetime" comment="Store vendors">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" comment="Vendor ID"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="100" comment="Vendor Name"/>
+        <column xsi:type="text" name="description" nullable="false" identity="false" comment="Vendor Description"/>
+        <column xsi:type="text" name="logo" nullable="false" comment="Vendor Logo"/>
+        <column xsi:type="datetime" name="date" padding="10" comment="Vendor added Date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+</schema>
