@@ -2,4 +2,10 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
     <module name="Elogic_Vendors" setup_version="1.0.0.1"/>
+    <menu>
+        <add id="Elogic_Vendors::vendor_delete" title="Delete vendor" module="Elogic_Vendors"
+             parent="Elogic_Vendors::vendor" sortOrder="10" resource="Elogic_Vendors::vendor_delete"/>
+        <add id="Elogic_Vendors::vendor_save" title="Save vendor" module="Elogic_Vendors"
+             parent="Elogic_Vendors::vendor" sortOrder="10" resource="Elogic_Vendors::vendor_save"/>
+    </menu>
 </config>
