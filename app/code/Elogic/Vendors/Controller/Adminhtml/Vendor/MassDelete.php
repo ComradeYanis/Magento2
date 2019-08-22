@@ -66,9 +66,8 @@ class MassDelete extends Action implements HttpPostActionInterface
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
         $this->_file = $file;
-        $this->_vendorRepository = $vendorRepository ?:
-            ObjectManager::getInstance()->create(VendorRepositoryInterface::class);
-        $this->_logger = $logger ?: ObjectManager::getInstance()->create(LoggerInterface::class);
+        $this->_vendorRepository = $vendorRepository;
+        $this->_logger = $logger;
         parent::__construct($context);
     }
 
