@@ -1,8 +1,4 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 
 use Elogic\Vendors\Block\Frontend\Vendor\ProductVendor;
 use Magento\Catalog\Block\Product\ListProduct;
@@ -10,18 +6,13 @@ use Magento\Catalog\Block\Product\ReviewRendererInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\App\Action\Action;
 
-// @codingStandardsIgnoreFile
 
-?>
-<?php
 /**
  * Product list template
  *
  * @var $block ListProduct
  * @var $viewModel ProductVendor
  */
-?>
-<?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper('Magento\Catalog\Helper\Output');
 $viewModel = $block->getData('viewModel');

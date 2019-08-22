@@ -146,7 +146,7 @@ class Save extends Action
             $model->setData($data);
 
             try {
-                $model->save();
+                $this->_modelRepository->save($model);
                 $this->messageManager->addSuccess(__('Vendor saved'));
                 $this->_getSession()->setFormData(false);
                 if ($this->getRequest()->getParam('back')) {

@@ -4,12 +4,12 @@ namespace Elogic\Vendors\Controller\Adminhtml\Vendor;
 
 use Elogic\Vendors\Api\VendorRepositoryInterface;
 use Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory;
+use Elogic\Vendors\Model\Vendor;
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\App\Action\HttpPostActionInterface;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem\Driver\File;
@@ -84,6 +84,7 @@ class MassDelete extends Action implements HttpPostActionInterface
         $vendorDeleted = 0;
         $vendorDeletedError = 0;
 
+        /** @var Vendor $item */
         foreach ($collection->getItems() as $item) {
             try {
                 $this->_vendorRepository->delete($item);
