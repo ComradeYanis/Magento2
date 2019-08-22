@@ -1,0 +1,14 @@
+{
+    "catalog_product_entity_datetime": {
+        "column": {
+            "entity_id": true,
+            "name": true,
+            "description": true,
+            "logo": true,
+            "date": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}
