@@ -103,7 +103,6 @@ class Save extends Action
             $file = $this->_request->getFiles('logo');
             if (isset($file) && isset($file['name']) && strlen($file['name'])) {
                 try {
-                    $base_media_path = 'elogic/vendors/images';
                     $uploader = $this->_uploader->create(['fileId' => 'logo']);
                     $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
                     $imageAdapter = $this->_adapterFactory->create();
@@ -113,9 +112,9 @@ class Save extends Action
                     $uploader->setFilesDispersion(true);
 
                     $mediaDirectory = $this->_fileSystem->getDirectoryRead(DirectoryList::MEDIA);
-                    $result = $uploader->save($mediaDirectory->getAbsolutePath($base_media_path));
+                    $result = $uploader->save($mediaDirectory->getAbsolutePath($this->_modelRepository::BASE_MEDIA_PATH));
 
-                    $data['logo'] = $base_media_path . $result['file'];
+                    $data['logo'] = $this->_modelRepository::BASE_MEDIA_PATH . $result['file'];
                 } catch (Exception $e) {
                     $this->messageManager->addError($e->getMessage());
                 }

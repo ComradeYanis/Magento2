@@ -11,8 +11,10 @@ use Elogic\Vendors\Model\ResourceModel\Vendor\Collection;
 use Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory;
 use Exception;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
+use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\Driver\File;
 
 /**
@@ -23,12 +25,17 @@ class VendorRepository implements VendorRepositoryInterface
 {
 
     /**
+     * @const BASE_MEDIA_PATH
+     */
+    const BASE_MEDIA_PATH = 'elogic/vendors/images';
+
+    /**
      * @var array $registry
      */
     private $registry = [];
 
     /**
-     * @var Collection $vendorResource
+     * @var VendorResource $vendorResource
      */
     private $vendorResource;
 
@@ -38,32 +45,40 @@ class VendorRepository implements VendorRepositoryInterface
     private $vendorFactory;
 
     /**
-     * @var Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory $vendorCollectionFactory
+     * @var CollectionFactory $vendorCollectionFactory
      */
     private $vendorCollectionFactory;
 
     /**
-     * @var Elogic\Vendors\Api\Data\VendorSearchResultInterfaceFactory $vendorSearchResultInterfaceFactory
+     * @var VendorSearchResultInterfaceFactory $vendorSearchResultInterfaceFactory
      */
     private $vendorSearchResultInterfaceFactory;
 
     /**
+     * @var Filesystem $_fileSystem
+     */
+    private $_fileSystem;
+
+    /**
      * VendorRepository constructor.
-     * @param Collection $vendorResource
+     * @param VendorResource $vendorResource
      * @param VendorFactory $vendorFactory
      * @param CollectionFactory $vendorCollectionFactory
-     * @param Elogic\Vendors\Api\Data\VendorSearchResultInterfaceFactory $vendorSearchResultFactory
+     * @param VendorSearchResultInterfaceFactory $vendorSearchResultFactory
+     * @param Filesystem $filesystem
      */
     public function __construct(
-        Collection $vendorResource,
+        VendorResource $vendorResource,
         VendorFactory $vendorFactory,
         CollectionFactory $vendorCollectionFactory,
-        VendorSearchResultInterfaceFactory $vendorSearchResultFactory
+        VendorSearchResultInterfaceFactory $vendorSearchResultFactory,
+        Filesystem $filesystem
     ) {
         $this->vendorResource                       = $vendorResource;
         $this->vendorFactory                        = $vendorFactory;
         $this->vendorCollectionFactory              = $vendorCollectionFactory;
         $this->vendorSearchResultInterfaceFactory   = $vendorSearchResultFactory;
+        $this->_fileSystem                          = $filesystem;
     }
 
     /**
@@ -126,7 +141,7 @@ class VendorRepository implements VendorRepositoryInterface
     {
         try {
             /** @var Vendor $vendor */
-            $this->vendorResource->save();
+            $this->vendorResource->save($vendor);
             $this->registry[$vendor->getEntityId()] = $this->get($vendor->getEntityId());
         } catch (Exception $exception) {
             throw new StateException(__('Unable to save vendor #%1', $vendor->getEntityId()));
@@ -147,7 +162,12 @@ class VendorRepository implements VendorRepositoryInterface
             if (isset($logo) && strlen($logo)) {
                 try {
                     $file = new File();
-                    $file->deleteFile($logo);
+                    $mediaDirectory = $this->_fileSystem->getDirectoryRead(DirectoryList::MEDIA);
+                    $mediaRootDir   = $mediaDirectory->getAbsolutePath();
+                    $filePath = $mediaRootDir . $logo;
+                    if ($file->isExists($filePath)) {
+                        $file->deleteFile($filePath);
+                    }
                 } catch (Exception $e) {
                     throw new StateException(__('Unable to remove image for vendor #%1', $vendor->getEntityId()));
                 }
