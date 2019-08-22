@@ -9,7 +9,6 @@ use Magento\Catalog\Model\Product;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class ProductVendor
@@ -86,11 +85,12 @@ class ProductVendor implements ArgumentInterface
     {
         $this->_product ?: $this->getProduct();
 
-        $elogicVendorId = $this->_product->getElogicVendor();
+        $elogicVendorIds = explode(',', $this->_product->getElogicVendor());
 
         $searchCriteria = $this->_searchCriteriaBuilder->addFilter(
             VendorInterface::ENTITY_ID,
-            $elogicVendorId
+            $elogicVendorIds,
+            'in'
         )->create();
 
         return $this->_vendorRepository->getList($searchCriteria);
