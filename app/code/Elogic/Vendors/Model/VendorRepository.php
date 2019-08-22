@@ -162,9 +162,7 @@ class VendorRepository implements VendorRepositoryInterface
             if (isset($logo) && strlen($logo)) {
                 try {
                     $file = new File();
-                    $mediaDirectory = $this->_fileSystem->getDirectoryRead(DirectoryList::MEDIA);
-                    $mediaRootDir   = $mediaDirectory->getAbsolutePath();
-                    $filePath = $mediaRootDir . $logo;
+                    $filePath = $vendor->getLogoUrl();
                     if ($file->isExists($filePath)) {
                         $file->deleteFile($filePath);
                     }
