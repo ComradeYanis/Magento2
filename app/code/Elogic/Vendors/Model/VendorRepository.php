@@ -76,7 +76,7 @@ class VendorRepository implements VendorRepositoryInterface
         if (!array_key_exists($id, $this->registry)) {
             /** @var Vendor $vendor */
             $vendor = $this->vendorFactory->create();
-            $this->vendorResource->load($vendor, $id);
+            $vendor->load($id);
             if (!$vendor->getEntityId()) {
                 throw new NoSuchEntityException(__('Requested vendor does not exist'));
             }
@@ -84,6 +84,14 @@ class VendorRepository implements VendorRepositoryInterface
         }
 
         return $this->registry[$id];
+    }
+
+    /**
+     * @return Vendor
+     */
+    public function create()
+    {
+        return $this->vendorFactory->create();
     }
 
     /**
@@ -118,7 +126,7 @@ class VendorRepository implements VendorRepositoryInterface
     {
         try {
             /** @var Vendor $vendor */
-            $this->vendorResource->save($vendor);
+            $this->vendorResource->save();
             $this->registry[$vendor->getEntityId()] = $this->get($vendor->getEntityId());
         } catch (Exception $exception) {
             throw new StateException(__('Unable to save vendor #%1', $vendor->getEntityId()));

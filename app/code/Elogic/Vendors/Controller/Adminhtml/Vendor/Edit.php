@@ -2,7 +2,6 @@
 
 namespace Elogic\Vendors\Controller\Adminhtml\Vendor;
 
-use Elogic\Vendors\Model\Vendor;
 use Elogic\Vendors\Model\VendorRepository;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Page;
@@ -86,7 +85,7 @@ class Edit extends Action
     public function execute()
     {
         $id = (int)$this->getRequest()->getParam('id');
-        $model = $this->_modelRepository;
+        $model = $this->_modelRepository->create();
 
         // If you have got an id, it's edition
         if ($id) {

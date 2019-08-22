@@ -2,7 +2,6 @@
 
 namespace Elogic\Vendors\Controller\Adminhtml\Vendor;
 
-use Elogic\Vendors\Model\Vendor;
 use Elogic\Vendors\Model\VendorRepository;
 use Exception;
 use Magento\Backend\App\Action;
@@ -12,7 +11,6 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Image\AdapterFactory;
 use Magento\MediaStorage\Model\File\UploaderFactory;
@@ -93,13 +91,13 @@ class Save extends Action
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         $data = $this->getRequest()->getPostValue();
-        if ($data) {
-            /** @var VendorRepository $model */
-            $model = $this->_modelRepository;
 
+        if ($data) {
             $id = $this->getRequest()->getParam('id');
             if ($id) {
-                $model->get($id);
+                $model = $this->_modelRepository->get($id);
+            } else {
+                $model = $this->_modelRepository->create();
             }
 
             $file = $this->_request->getFiles('logo');
@@ -146,8 +144,10 @@ class Save extends Action
                 ['vendor' => $model, 'request' => $this->getRequest()]
             );
 
+            $model->setData($data);
+
             try {
-                $model->save($data);
+                $model->save();
                 $this->messageManager->addSuccess(__('Vendor saved'));
                 $this->_getSession()->setFormData(false);
                 if ($this->getRequest()->getParam('back')) {
