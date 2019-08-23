@@ -1,20 +1,20 @@
 <?php
 
-namespace Elogic\Vendors\Helper;
+namespace Elogic\Vendors\Model\Image;
 
 use Exception;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\File\UploaderFactory;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Image\AdapterFactory;
-use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class UploadPhoto
  * @package Elogic\Vendors\Helper
  */
-class UploadPhoto
+class UploadImage implements UploadImageInterface
 {
     /**
      * @var StoreManagerInterface $_storeManager
@@ -113,7 +113,7 @@ class UploadPhoto
      * @param string $fileDirectory
      * @return string
      */
-    protected function getFileFullPath(string $filePath, string $fileDirectory = DirectoryList::MEDIA)
+    public function getFileFullPath(string $filePath, string $fileDirectory = DirectoryList::MEDIA)
     {
         return $this->getMediaPath($fileDirectory)->getAbsolutePath($filePath);
     }
@@ -133,7 +133,7 @@ class UploadPhoto
      * @throws FileSystemException
      * @throws Exception
      */
-    protected function deleteFile(string $fullFilePath)
+    public function deleteFile(string $fullFilePath)
     {
         if ($this->fileExist($fullFilePath)) {
             try {

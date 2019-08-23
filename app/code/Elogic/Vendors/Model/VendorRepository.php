@@ -6,6 +6,7 @@ use Elogic\Vendors\Api\Data\VendorInterface;
 use Elogic\Vendors\Api\Data\VendorSearchResultInterface;
 use Elogic\Vendors\Api\Data\VendorSearchResultInterfaceFactory;
 use Elogic\Vendors\Api\VendorRepositoryInterface;
+use Elogic\Vendors\Model\Image\UploadImage;
 use Elogic\Vendors\Model\ResourceModel\Vendor as VendorResource;
 use Elogic\Vendors\Model\ResourceModel\Vendor\Collection;
 use Elogic\Vendors\Model\ResourceModel\Vendor\CollectionFactory;
@@ -13,8 +14,6 @@ use Exception;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
-use Magento\Framework\Filesystem;
-use Magento\Framework\Filesystem\Driver\File;
 
 /**
  * Class VendorRepository
@@ -54,9 +53,9 @@ class VendorRepository implements VendorRepositoryInterface
     private $vendorSearchResultInterfaceFactory;
 
     /**
-     * @var Filesystem $_fileSystem
+     * @var UploadImage $_uploadImage
      */
-    private $_fileSystem;
+    private $_uploadImage;
 
     /**
      * VendorRepository constructor.
@@ -64,20 +63,20 @@ class VendorRepository implements VendorRepositoryInterface
      * @param VendorFactory $vendorFactory
      * @param CollectionFactory $vendorCollectionFactory
      * @param VendorSearchResultInterfaceFactory $vendorSearchResultFactory
-     * @param Filesystem $filesystem
+     * @param UploadImage $uploadImage
      */
     public function __construct(
         VendorResource $vendorResource,
         VendorFactory $vendorFactory,
         CollectionFactory $vendorCollectionFactory,
         VendorSearchResultInterfaceFactory $vendorSearchResultFactory,
-        Filesystem $filesystem
+        UploadImage $uploadImage
     ) {
         $this->vendorResource                       = $vendorResource;
         $this->vendorFactory                        = $vendorFactory;
         $this->vendorCollectionFactory              = $vendorCollectionFactory;
         $this->vendorSearchResultInterfaceFactory   = $vendorSearchResultFactory;
-        $this->_fileSystem                          = $filesystem;
+        $this->_uploadImage                         = $uploadImage;
     }
 
     /**
@@ -159,15 +158,8 @@ class VendorRepository implements VendorRepositoryInterface
             /** @var Vendor $vendor */
             $logo = $vendor->getLogo();
             if (isset($logo) && strlen($logo)) {
-                try {
-                    $file = new File();
-                    $filePath = $vendor->getLogoUrl();
-                    if ($file->isExists($filePath)) {
-                        $file->deleteFile($filePath);
-                    }
-                } catch (Exception $e) {
-                    throw new StateException(__('Unable to remove image for vendor #%1', $vendor->getEntityId()));
-                }
+                $fullFilePath = $this->_uploadImage->getFileFullPath($logo);
+                $this->_uploadImage->deleteFile($fullFilePath);
             }
             $this->vendorResource->delete($vendor);
             unset($this->registry[$vendor->getEntityId()]);

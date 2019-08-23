@@ -2,7 +2,7 @@
 
 namespace Elogic\Vendors\Controller\Adminhtml\Vendor;
 
-use Elogic\Vendors\Helper\UploadPhoto;
+use Elogic\Vendors\Model\Image\UploadImage;
 use Elogic\Vendors\Model\VendorRepository;
 use Exception;
 use Magento\Backend\App\Action;
@@ -33,24 +33,24 @@ class Save extends Action
     protected $_storeManager;
 
     /**
-     * @var UploadPhoto $_uploadPhotoHelper
+     * @var UploadImage $uploadImage
      */
-    protected $_uploadPhotoHelper;
+    protected $uploadImage;
 
     //endregion
 
     /**
      * @param Action\Context $context
      * @param VendorRepository $modelRepository
-     * @param UploadPhoto $uploadPhotoHelper
+     * @param UploadImage $uploadImage
      */
     public function __construct(
         Action\Context $context,
         VendorRepository $modelRepository,
-        UploadPhoto $uploadPhotoHelper
+        UploadImage $uploadImage
     ) {
         $this->_modelRepository = $modelRepository;
-        $this->_uploadPhotoHelper = $uploadPhotoHelper;
+        $this->uploadImage = $uploadImage;
         parent::__construct($context);
     }
 
@@ -84,9 +84,10 @@ class Save extends Action
             }
 
             $file = $this->_request->getFiles('logo');
-            if (isset($file) && isset($file['name']) && strlen($file['name'])) {
-
-                $data['logo'] = $this->_uploadPhotoHelper
+            if ( (isset($file) && isset($file['name']) && strlen($file['name']))
+                || (isset($data['logo']))
+            ) {
+                $data['logo'] = $this->uploadImage
                     ->uploadPhoto($data, 'logo', $file, $this->_modelRepository::BASE_MEDIA_PATH);
             }
 
