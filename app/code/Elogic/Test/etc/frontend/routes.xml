@@ -2,8 +2,8 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="standard">
-        <route id="elogic" frontName="test">
-            <module name="Elogic_Js"/>
+        <route id="test" frontName="test">
+            <module name="Elogic_Test"/>
         </route>
     </router>
 </config>
