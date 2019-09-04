@@ -1,17 +1,16 @@
-define(['ko'], function (ko) {
+define(['ko', 'jquery'], function (ko, $) {
     'use strict';
 
     return function (config) {
-        const title = ko.observable('Test page for my self. It`s just a title');
-        title.subscribe(function (newValue) {
-            console.log('New value: "', newValue, '"');
-        });
-        title.subscribe(function (oldValue) {
-            console.log('Has been changed from: "', oldValue, '"');
-        }, this, 'beforeChange');
-        return {
-            title: title,
-            config: config
-        }
+        let currencyInfo = ko.observable();
+        $.getJSON(config.base_url + 'rest/V1/directory/currency', currencyInfo)
+
+        const viewModel = {
+            label: ko.observable('Test info')
+        };
+        viewModel.output = ko.computed(function () {
+            return this.label() + ':\n' + JSON.stringify(currencyInfo(), null, 2);
+        }.bind(viewModel));
+        return viewModel;
     }
 });
