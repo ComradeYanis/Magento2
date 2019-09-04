@@ -9,14 +9,15 @@
             "Magento_Ui/js/core/app": {
                 "components": {
                     "startSimple": {
-                        "component": "Elogic_Test/js/plain-view-model"
+                        "component": "Elogic_Test/js/plain-view-model",
+                        "base_url": "<?= $block->escapeJs($block->getBaseUrl()) ?>"
                     }
                 }
             }
         }
     }
 </script>
-<h1>hhhhhhh</h1>
 <div data-bind="scope: 'startSimple'">
     <h2 data-bind="text: title"></h2>
+    <pre data-bind="text: JSON.stringify(config, null, 2)"></pre>
 </div>

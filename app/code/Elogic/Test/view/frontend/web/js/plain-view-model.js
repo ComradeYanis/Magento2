@@ -1,10 +1,17 @@
-define([], function () {
+define(['ko'], function (ko) {
     'use strict';
 
-    return function () {
-        console.log('hey, i`m testing');
+    return function (config) {
+        const title = ko.observable('Test page for my self. It`s just a title');
+        title.subscribe(function (newValue) {
+            console.log('New value: "', newValue, '"');
+        });
+        title.subscribe(function (oldValue) {
+            console.log('Has been changed from: "', oldValue, '"');
+        }, this, 'beforeChange');
         return {
-            title: 'Test page for my self. It`s just a title'
+            title: title,
+            config: config
         }
     }
 });
