@@ -4,10 +4,10 @@ define(['ko', 'jquery'], function (ko, $) {
     return function () {
         const viewModel = {
             exchange_rates: ko.observable([
-                {
-                    currency_to: 'USD',
-                    rate: 1.0
-                }
+                1,
+                2,
+                3,
+                4
             ])
         };
         return viewModel;

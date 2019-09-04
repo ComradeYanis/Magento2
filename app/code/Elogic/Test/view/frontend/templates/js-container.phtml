@@ -17,8 +17,7 @@
     }
 </script>
 <div data-bind="scope: 'startSimple'">
-    <table data-bind="foreach: exchange_rates">
-        <tr data-bind="text: currency_to"></tr>
-        <tr data-bind="text: rate"></tr>
-    </table>
+    <ul data-bind="foreach: exchange_rates">
+        <li data-bind="text: $data"></li>
+    </ul>
 </div>
